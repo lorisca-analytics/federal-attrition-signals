@@ -233,13 +233,13 @@
   ],
   "20000": [
    {
-    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "agency": "DEPARTMENT OF THE ARMY",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 14
    },
    {
-    "agency": "DEPARTMENT OF THE ARMY",
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 14
@@ -258,6 +258,115 @@
    }
   ]
  },
+ "service_rates_fy2012_2024": [
+  {
+   "service_band": "under 1",
+   "agency_code": "ALL",
+   "core_quit_rate": 11.27
+  },
+  {
+   "service_band": "under 1",
+   "agency_code": "AR",
+   "core_quit_rate": 9.09
+  },
+  {
+   "service_band": "under 1",
+   "agency_code": "VA",
+   "core_quit_rate": 13.09
+  },
+  {
+   "service_band": "1 to 2",
+   "agency_code": "ALL",
+   "core_quit_rate": 6.65
+  },
+  {
+   "service_band": "1 to 2",
+   "agency_code": "AR",
+   "core_quit_rate": 8.1
+  },
+  {
+   "service_band": "1 to 2",
+   "agency_code": "VA",
+   "core_quit_rate": 7.03
+  },
+  {
+   "service_band": "3 to 4",
+   "agency_code": "ALL",
+   "core_quit_rate": 4.46
+  },
+  {
+   "service_band": "3 to 4",
+   "agency_code": "AR",
+   "core_quit_rate": 5.61
+  },
+  {
+   "service_band": "3 to 4",
+   "agency_code": "VA",
+   "core_quit_rate": 4.62
+  },
+  {
+   "service_band": "5 to 9",
+   "agency_code": "ALL",
+   "core_quit_rate": 2.85
+  },
+  {
+   "service_band": "5 to 9",
+   "agency_code": "AR",
+   "core_quit_rate": 3.55
+  },
+  {
+   "service_band": "5 to 9",
+   "agency_code": "VA",
+   "core_quit_rate": 3.12
+  },
+  {
+   "service_band": "10 to 19",
+   "agency_code": "ALL",
+   "core_quit_rate": 1.23
+  },
+  {
+   "service_band": "10 to 19",
+   "agency_code": "AR",
+   "core_quit_rate": 1.56
+  },
+  {
+   "service_band": "10 to 19",
+   "agency_code": "VA",
+   "core_quit_rate": 1.38
+  },
+  {
+   "service_band": "20 or more",
+   "agency_code": "ALL",
+   "core_quit_rate": 0.33
+  },
+  {
+   "service_band": "20 or more",
+   "agency_code": "AR",
+   "core_quit_rate": 0.41
+  },
+  {
+   "service_band": "20 or more",
+   "agency_code": "VA",
+   "core_quit_rate": 0.44
+  }
+ ],
+ "service_early_share_fy2012_2024": [
+  {
+   "agency_code": "ALL",
+   "headcount_share_under_3_years": 16.0,
+   "quit_share_under_3_years": 47.5
+  },
+  {
+   "agency_code": "AR",
+   "headcount_share_under_3_years": 15.6,
+   "quit_share_under_3_years": 39.9
+  },
+  {
+   "agency_code": "VA",
+   "headcount_share_under_3_years": 23.3,
+   "quit_share_under_3_years": 55.7
+  }
+ ],
  "core_share_fy2024": {
   "core_share_of_quits": 71.9,
   "core_share_of_headcount": 91.8

@@ -34,8 +34,8 @@
     return r.text();
   }).then(parseCSV);
 
-  const [agencyYear, occYear, bench, reasons, months, gaps] = await Promise.all(
-    ["agency_year", "occupation_year", "benchmark_year", "reason_year", "agency_month", "coverage_gaps"].map(load));
+  const [agencyYear, occYear, bench, reasons, months, gaps, service] = await Promise.all(
+    ["agency_year", "occupation_year", "benchmark_year", "reason_year", "agency_month", "coverage_gaps", "service_year"].map(load));
 
   // OPM cuts agency names at 40 characters. Full names for the ones that get cut.
   const FULL = {
@@ -176,6 +176,42 @@
     })), { aria: `Quit rate by occupational group, ${fyLabel(fy)}` });
   }
 
+  /* 5b. Length of service */
+  const BANDS = ["under 1", "1 to 2", "3 to 4", "5 to 9", "10 to 19", "20 or more"];
+  // FY2012 to FY2024: the years before the 2025 exit program, so program exits don't blur the pattern
+  const svcRows = service.filter(r => !r.provisional && r.fiscal_year <= 2024);
+  const svcRate = code => BANDS.map(b => {
+    const rs = svcRows.filter(r => r.agency_code === code && r.service_band === b);
+    const hc = rs.reduce((a, r) => a + r.core_avg_headcount, 0);
+    return hc ? +(100 * rs.reduce((a, r) => a + r.core_quits, 0) / hc).toFixed(2) : null;
+  });
+  const svcEarly = code => {
+    const rs = svcRows.filter(r => r.agency_code === code);
+    const hc = rs.reduce((a, r) => a + r.core_avg_headcount, 0);
+    const early = rs.filter(r => r.service_band === "under 1" || r.service_band === "1 to 2").reduce((a, r) => a + r.core_avg_headcount, 0);
+    return hc ? Math.round(100 * early / hc) : null;
+  };
+  const svcAgencies = [...new Set(svcRows.filter(r => r.agency_code !== "ALL").map(r => r.agency_code))]
+    .filter(c => svcRows.filter(r => r.agency_code === c).length >= 6 * 10)
+    .sort((a, b) => title(svcRows.find(r => r.agency_code === a).agency).localeCompare(title(svcRows.find(r => r.agency_code === b).agency)));
+  const agencySelSvc = document.getElementById("agencySelSvc");
+  agencySelSvc.innerHTML = svcAgencies.map(c => `<option value="${c}">${title(svcRows.find(r => r.agency_code === c).agency)}</option>`).join("");
+  agencySelSvc.value = svcAgencies.includes("VA") ? "VA" : svcAgencies[0];
+  function drawSvc() {
+    const code = agencySelSvc.value, name = title(svcRows.find(r => r.agency_code === code).agency);
+    const series = [
+      { name, color: "var(--s1)", values: svcRate(code) },
+      { name: "All covered agencies", color: "var(--s2)", values: svcRate("ALL") },
+    ];
+    C.legend(document.getElementById("legendSvc"), series);
+    C.lines(document.getElementById("chartSvc"), BANDS.map(b => b === "under 1" ? "under 1 yr" : b + " yrs"), series,
+      { height: 280, right: 24, directLabels: false, aria: `Permanent-staff quits per 100 by years of service, ${name}`,
+        showX: () => true });
+    document.getElementById("capSvc").textContent =
+      `Quits per 100 permanent staff in each band. At ${name}, ${svcEarly(code)}% of permanent staff were in their first three years, against ${svcEarly("ALL")}% across all covered agencies.`;
+  }
+  agencySelSvc.addEventListener("change", drawSvc);
+
   /* 6. Gaps table, sortable by clicking a column header */
   const gapCols = [
     { head: "Agency", key: g => title(g.agency), show: g => title(g.agency) },
@@ -203,7 +239,7 @@
   }
   drawGaps();
 
-  function drawAll() { drawMonthly(); drawRank(); drawReason(); drawBench(); drawOcc(); }
+  function drawAll() { drawMonthly(); drawRank(); drawReason(); drawBench(); drawSvc(); drawOcc(); }
   agencySel.addEventListener("change", drawMonthly);
   fySel.addEventListener("change", drawRank);
   whoSel.addEventListener("change", drawRank);

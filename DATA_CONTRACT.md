@@ -19,6 +19,7 @@ The clean tables in `data/clean/` (copied to `dashboard/data/`) are the only out
 | `agency_year` | agency and fiscal year | Rates and reasons by agency, all staff and permanent staff. Rank only rows where `incomplete` is false. |
 | `occupation_year` | occupational group and fiscal year | Rates by job type. Incomplete agency-years are already left out. |
 | `reason_year` | fiscal year and reason segment | Why people left, across covered agencies. Segments: Quit, Retirement or early out, DRP-flagged exit, Reduction in force, Transfer, termination or other. |
+| `service_year` | fiscal year, agency (or ALL) and service band | Permanent-staff quits per 100 by years of service. Bands with under 100 permanent staff are left out. |
 | `benchmark_year` | fiscal year and series | OPM federal quit rate next to BLS industries. |
 | `agency_month` | agency and file month | Separations as reported each month, the usual level, and whether the month failed the check. |
 | `coverage_gaps` | agency and file month | Only the months that failed the check. |

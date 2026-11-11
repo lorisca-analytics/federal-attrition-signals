@@ -22,6 +22,7 @@ PARAMS = {
     "min_headcount": 1000,         # smaller agencies swing too much to rank
     "min_baseline": 20,            # coverage check only where an agency normally reports 20+ a month
     "gap_ratio": 0.25,             # under a quarter of its own recent median = gap
+    "min_band_headcount": 100,     # length-of-service bands smaller than this are left out
     "provisional_from_fy": 2026,   # late records for this year are still arriving
 }
 
@@ -30,6 +31,9 @@ EXPORTS = {
     "occupation_year": "select * from occupation_year order by fiscal_year, occupational_group",
     "benchmark_year": "select * from benchmark_year order by fiscal_year, series",
     "reason_year": "select * from reason_year order by fiscal_year, segment",
+    "service_year": """
+        select * from service_year order by fiscal_year, agency_code,
+        list_position(['under 1', '1 to 2', '3 to 4', '5 to 9', '10 to 19', '20 or more'], service_band)""",
     "agency_month": """
         select c.agency_code, n.agency, c.file_month, c.separations, c.baseline, c.is_gap
         from coverage c join agency_names n using (agency_code)

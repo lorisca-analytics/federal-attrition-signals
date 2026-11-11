@@ -8,7 +8,7 @@ import pytest
 
 from fas import build, contract
 
-PARAMS = {"min_headcount": 10, "min_baseline": 3, "provisional_from_fy": 2099}
+PARAMS = {"min_headcount": 10, "min_baseline": 3, "min_band_headcount": 10, "provisional_from_fy": 2099}
 
 
 def months(start, end):
@@ -28,6 +28,7 @@ def sep_rows(agency_code, agency, effective, n_quit, n_retire, group="ACCOUNTING
             "agency_code": agency_code, "agency": agency, "occupational_group": group,
             "separation_category_code": code, "personnel_action_effective_date_yyyymm": effective,
             "drp_indicator": drp, "count": "1", "tenure_code": tenure, "work_schedule_code": schedule,
+            "length_of_service_years": "0.5",
         } for _ in range(n)]
     return rows
 
@@ -63,7 +64,8 @@ def raw(tmp_path):
     for ym in ("201109", "201209", "201309"):
         write("employment", ym, [
             {"agency_code": a, "agency": n, "occupational_group": "ACCOUNTING AND BUDGET GROUP",
-             "count": "1", "snapshot_yyyymm": ym, "tenure_code": "1" if i < 90 else "0", "work_schedule_code": "F"}
+             "count": "1", "snapshot_yyyymm": ym, "tenure_code": "1" if i < 90 else "0", "work_schedule_code": "F",
+             "length_of_service_years": "0.5" if i < 45 or a == "CC" else "12.0"}
             for a, n in (("AA", "AGENCY A"), ("BB", "AGENCY B"), ("CC", "AGENCY C")) for i in range(100)])
 
     (tmp_path / "manifest.json").write_text(json.dumps({"files": files}))
@@ -119,6 +121,19 @@ def test_missing_submission_is_a_gap_not_retention(raw, tmp_path):
     out = run(raw, tmp_path)
     gaps = read(out / "coverage_gaps.csv")
     assert [(g["agency_code"], g["file_month"]) for g in gaps] == [("BB", "201303")]
+
+
+def test_service_bands_cover_permanent_quits(raw, tmp_path):
+    out = run(raw, tmp_path)
+    aa = {r["service_band"]: r for r in read(out / "service_year.csv")
+          if r["fiscal_year"] == "2013" and r["agency_code"] == "AA"}
+    # every permanent quit in the fixture has half a year of service. 45 permanent staff are in that band
+    assert aa["under 1"]["core_quits"] == "26"
+    assert aa["under 1"]["core_avg_headcount"] == "45"
+    assert aa["10 to 19"]["core_quits"] == "0"
+    every = [r for r in read(out / "service_year.csv") if r["fiscal_year"] == "2013" and r["agency_code"] == "ALL"]
+    assert sum(int(r["core_quits"]) for r in every) == sum(
+        int(r["core_quits"]) for r in read(out / "agency_year.csv") if r["fiscal_year"] == "2013" and r["incomplete"] == "false")
 
 
 def test_seasonal_low_month_is_not_a_gap(raw, tmp_path):

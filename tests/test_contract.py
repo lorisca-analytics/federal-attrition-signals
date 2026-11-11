@@ -32,6 +32,9 @@ def good_folder(tmp_path):
         "fiscal_year": 2024, "series": "Federal (BLS)", "quit_rate": 7.2, "provisional": "false"}])
     write_table(tmp_path, "reason_year", [{
         "fiscal_year": 2024, "segment": "Quit", "separations": 5, "rate": 3.5, "provisional": "false"}])
+    write_table(tmp_path, "service_year", [{
+        "fiscal_year": 2024, "agency_code": "ALL", "agency": "All covered agencies", "service_band": "under 1",
+        "core_avg_headcount": 200000, "core_quits": 21000, "core_quit_rate": 10.5, "provisional": "false"}])
     write_table(tmp_path, "agency_month", [
         {"agency_code": "AR", "agency": "DEPARTMENT OF THE ARMY", "file_month": "201107",
          "separations": 2000, "baseline": "", "is_gap": "false"},

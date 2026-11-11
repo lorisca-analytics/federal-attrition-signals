@@ -79,6 +79,20 @@
       },
       "checks": ["rate_needs_flags"]
     },
+    "service_year": {
+      "key": ["fiscal_year", "agency_code", "service_band"],
+      "columns": {
+        "fiscal_year": {"type": "int", "min": 2012},
+        "agency_code": {"type": "str", "pattern": "^([A-Z0-9]{2}|ALL)$"},
+        "agency": {"type": "str"},
+        "service_band": {"type": "str", "pattern": "^(under 1|1 to 2|3 to 4|5 to 9|10 to 19|20 or more)$"},
+        "core_avg_headcount": {"type": "int", "min": 1},
+        "core_quits": {"type": "int", "min": 0},
+        "core_quit_rate": {"type": "float", "min": 0, "max": 100},
+        "provisional": {"type": "bool"}
+      },
+      "checks": ["rate_needs_flags"]
+    },
     "agency_month": {
       "key": ["agency_code", "file_month"],
       "columns": {

@@ -29,7 +29,16 @@ select
     end                                                             as reason,
     coalesce(drp_indicator, 'N')                                    as drp_indicator,
     -- permanent or conditional appointment, on a regular (not seasonal or intermittent) schedule
-    coalesce(tenure_code in ('1', '2') and work_schedule_code in ('F', 'P', 'S', 'R', 'B'), false) as is_core
+    coalesce(tenure_code in ('1', '2') and work_schedule_code in ('F', 'P', 'S', 'R', 'B'), false) as is_core,
+    case
+        when try_cast(length_of_service_years as double) is null then 'unknown'
+        when try_cast(length_of_service_years as double) < 1 then 'under 1'
+        when try_cast(length_of_service_years as double) < 3 then '1 to 2'
+        when try_cast(length_of_service_years as double) < 5 then '3 to 4'
+        when try_cast(length_of_service_years as double) < 10 then '5 to 9'
+        when try_cast(length_of_service_years as double) < 20 then '10 to 19'
+        else '20 or more'
+    end                                                             as service_band
 from raw_separations
 where personnel_action_effective_date_yyyymm >= (select first_month from params);
 
@@ -269,3 +278,58 @@ select seg.fiscal_year, seg.segment, seg.separations,
        round(100.0 * seg.separations / den.hc, 2) as rate,
        seg.fiscal_year >= (select provisional_from_fy from params) as provisional
 from seg join den using (fiscal_year);
+
+-- 8. Permanent-staff quits by length of service, for each agency and across all covered agencies.
+-- Denominator: average of the permanent September headcount in the same band before and at the end of the year.
+create or replace table hc_band as
+select cast(substr(snapshot_month, 1, 4) as int) as fiscal_year, agency_code,
+    case
+        when try_cast(length_of_service_years as double) is null then 'unknown'
+        when try_cast(length_of_service_years as double) < 1 then 'under 1'
+        when try_cast(length_of_service_years as double) < 3 then '1 to 2'
+        when try_cast(length_of_service_years as double) < 5 then '3 to 4'
+        when try_cast(length_of_service_years as double) < 10 then '5 to 9'
+        when try_cast(length_of_service_years as double) < 20 then '10 to 19'
+        else '20 or more'
+    end as service_band,
+    sum(cast("count" as int)) as headcount
+from raw_employment
+where substr(snapshot_month, 5, 2) = '09'
+  and tenure_code in ('1', '2') and work_schedule_code in ('F', 'P', 'S', 'R', 'B')
+group by all;
+
+create or replace table service_year as
+with ok as (select agency_code, fiscal_year from agency_year where not incomplete),
+q as (
+    select s.fiscal_year, s.agency_code, s.service_band, count(*) as core_quits
+    from separations s join ok using (agency_code, fiscal_year)
+    where s.reason = 'quit' and s.is_core
+    group by all
+),
+d as (
+    select e.fiscal_year, e.agency_code, e.service_band,
+           (e.headcount + coalesce(b.headcount, e.headcount)) / 2.0 as core_avg_headcount
+    from hc_band e
+    join ok on ok.agency_code = e.agency_code and ok.fiscal_year = e.fiscal_year
+    left join hc_band b on b.agency_code = e.agency_code and b.service_band = e.service_band
+                       and b.fiscal_year = e.fiscal_year - 1
+),
+by_agency as (
+    select d.fiscal_year, d.agency_code, d.service_band, d.core_avg_headcount, coalesce(q.core_quits, 0) as core_quits
+    from d left join q using (fiscal_year, agency_code, service_band)
+),
+rolled as (
+    select fiscal_year, agency_code, service_band, core_avg_headcount, core_quits from by_agency
+    union all
+    select fiscal_year, 'ALL' as agency_code, service_band, sum(core_avg_headcount), sum(core_quits)
+    from by_agency group by all
+)
+select r.fiscal_year, r.agency_code,
+       case when r.agency_code = 'ALL' then 'All covered agencies' else n.agency end as agency,
+       r.service_band,
+       round(r.core_avg_headcount)::int as core_avg_headcount,
+       r.core_quits,
+       round(100.0 * r.core_quits / nullif(r.core_avg_headcount, 0), 2) as core_quit_rate,
+       r.fiscal_year >= (select provisional_from_fy from params) as provisional
+from rolled r left join agency_names n using (agency_code)
+where r.service_band <> 'unknown' and r.core_avg_headcount >= (select min_band_headcount from params);

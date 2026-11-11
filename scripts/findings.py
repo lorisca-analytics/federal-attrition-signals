@@ -101,6 +101,19 @@ f["core_top5_by_size_floor"] = {
         select agency, count(*) filter (where rk <= 5) as years_in_top5, count(*) as years_ranked, max(field) as agencies_ranked
         from r group by agency having count(*) filter (where rk <= 5) >= 10 order by 2 desc""")
     for floor in (5000, 10000, 20000)}
+con.execute(f"create view service_year as select * from read_csv_auto('{(CLEAN / 'service_year.csv').as_posix()}', types={{'agency_code': 'VARCHAR'}})")
+f["service_rates_fy2012_2024"] = rows("""
+    select service_band, agency_code, round(100.0 * sum(core_quits) / sum(core_avg_headcount), 2) as core_quit_rate
+    from service_year where fiscal_year between 2012 and 2024 and agency_code in ('ALL', 'VA', 'AR')
+    group by service_band, agency_code order by list_position(['under 1', '1 to 2', '3 to 4', '5 to 9', '10 to 19', '20 or more'], service_band), agency_code""")
+f["service_early_share_fy2012_2024"] = rows("""
+    select agency_code,
+           round(100.0 * sum(core_avg_headcount) filter (where service_band in ('under 1', '1 to 2'))
+                 / sum(core_avg_headcount), 1) as headcount_share_under_3_years,
+           round(100.0 * sum(core_quits) filter (where service_band in ('under 1', '1 to 2'))
+                 / sum(core_quits), 1) as quit_share_under_3_years
+    from service_year where fiscal_year between 2012 and 2024 and agency_code in ('ALL', 'VA', 'AR')
+    group by 1 order by 1""")
 f["core_share_fy2024"] = rows("""
     select round(100.0 * sum(core_quits) / sum(quits), 1) as core_share_of_quits,
            round(100.0 * sum(core_avg_headcount) / sum(avg_headcount), 1) as core_share_of_headcount
