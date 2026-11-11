@@ -36,7 +36,7 @@ FIRST_MONTH = "201107"
 # history for the first months of the window. They are not counted in any rate.
 FIRST_SEPARATIONS_MONTH = "201007"
 # One headcount snapshot per fiscal year end (September) is enough for annual rates.
-# Monthly headcount would be about 9 GB, see DECISIONS.md.
+# Monthly headcount would be about 12.6 GB, see DECISIONS.md.
 EMPLOYMENT_MONTHS = {"09"}
 
 # BLS JOLTS quits rate (QUR) and total separations rate (TSR), seasonally adjusted.
