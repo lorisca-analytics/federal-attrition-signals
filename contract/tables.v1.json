@@ -4,6 +4,7 @@
   "rules": [
     "Columns are never renamed or removed within a major version. New columns may be added at the end.",
     "Every table that carries a rate also carries the flags that say whether the rate can be trusted.",
+    "core_ columns count only permanent or conditional appointments (tenure group 1 or 2) on a regular schedule (not seasonal, not intermittent), with the same headcount rule.",
     "drp_ columns count separations OPM flags with drp_indicator = Y (Deferred Resignation Program). They are a subset of the reasons, never added to them.",
     "A rate is per 100 employees, using the average of the September headcount before and at the end of the fiscal year. A separation rate can pass 100 when an agency shrinks to almost nothing within the year, so start and end headcount are carried with it."
   ],
@@ -30,6 +31,9 @@
         "quit_rate": {"type": "float", "min": 0, "max": 100},
         "quit_rate_excl_drp": {"type": "float", "min": 0, "max": 100},
         "separation_rate": {"type": "float", "min": 0, "max": 1000},
+        "core_avg_headcount": {"type": "int", "min": 0},
+        "core_quits": {"type": "int", "min": 0},
+        "core_quit_rate": {"type": "float", "min": 0, "max": 100, "nullable": true},
         "incomplete": {"type": "bool"},
         "gap_months": {"type": "int", "min": 0, "max": 12},
         "provisional": {"type": "bool"}
@@ -48,6 +52,8 @@
         "quit_rate": {"type": "float", "min": 0, "max": 100},
         "quit_rate_excl_drp": {"type": "float", "min": 0, "max": 100},
         "separation_rate": {"type": "float", "min": 0, "max": 100},
+        "core_quits": {"type": "int", "min": 0},
+        "core_quit_rate": {"type": "float", "min": 0, "max": 100, "nullable": true},
         "provisional": {"type": "bool"}
       },
       "checks": ["rate_needs_flags"]

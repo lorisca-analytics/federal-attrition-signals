@@ -27,14 +27,18 @@ select
         when 'SJ' then 'termination_or_expired'
         else 'other'
     end                                                             as reason,
-    coalesce(drp_indicator, 'N')                                    as drp_indicator
+    coalesce(drp_indicator, 'N')                                    as drp_indicator,
+    -- permanent or conditional appointment, on a regular (not seasonal or intermittent) schedule
+    coalesce(tenure_code in ('1', '2') and work_schedule_code in ('F', 'P', 'S', 'R', 'B'), false) as is_core
 from raw_separations
 where personnel_action_effective_date_yyyymm >= (select first_month from params);
 
 -- 2. Headcount per September snapshot (and the newest month).
 create or replace table headcount as
 select snapshot_month, agency_code, coalesce(occupational_group, 'UNKNOWN') as occupational_group,
-       sum(cast("count" as int)) as headcount
+       sum(cast("count" as int)) as headcount,
+       coalesce(sum(cast("count" as int)) filter (
+           where tenure_code in ('1', '2') and work_schedule_code in ('F', 'P', 'S', 'R', 'B')), 0) as core_headcount
 from raw_employment
 group by all;
 
@@ -44,10 +48,12 @@ select agency_code, arg_max(agency, file_month) as agency
 from separations group by agency_code;
 
 -- 3. Coverage check, per agency and file month.
--- A file month is a gap when an agency that normally reports reports far fewer
--- separations than its own recent median. Missing data must never look like retention.
+-- A file month is a gap when an agency that normally reports sends far fewer separations
+-- than both its own median of the previous 12 months and the same month a year earlier.
+-- Counts come straight from the raw files (all effective dates), including the 12 files
+-- before the analysis window that exist only to give the first year a full baseline.
 create or replace table file_months as
-select distinct file_month from separations;
+select distinct file_month from raw_separations;
 
 create or replace table agency_file_counts as
 with big as (   -- agencies large enough for the check to mean something
@@ -55,7 +61,7 @@ with big as (   -- agencies large enough for the check to mean something
     group by agency_code having max(headcount) >= (select min_headcount from params)
 ),
 grid as (select b.agency_code, f.file_month from big b cross join file_months f),
-counts as (select agency_code, file_month, count(*) as n from separations group by all)
+counts as (select agency_code, file_month, count(*) as n from raw_separations group by all)
 select g.agency_code, g.file_month, coalesce(c.n, 0) as separations
 from grid g left join counts c using (agency_code, file_month);
 
@@ -64,19 +70,22 @@ select
     agency_code,
     file_month,
     separations,
-    median(separations) over (
-        partition by agency_code order by file_month
-        rows between 12 preceding and 1 preceding)                as baseline
-from agency_file_counts;
+    median(separations) over w                                    as baseline,
+    count(*) over w                                               as baseline_months,
+    lag(separations, 12) over (partition by agency_code order by file_month) as same_month_last_year
+from agency_file_counts
+window w as (partition by agency_code order by file_month rows between 12 preceding and 1 preceding);
 
 create or replace table coverage as
 select *,
-    baseline is not null
+    baseline_months = 12
       and baseline >= (select min_baseline from params)
-      and separations < baseline * (select gap_ratio from params)  as is_gap,
+      and separations < baseline * (select gap_ratio from params)
+      and separations < same_month_last_year * (select gap_ratio from params) as is_gap,
     cast(substr(file_month, 1, 4) as int)
       + case when cast(substr(file_month, 5, 2) as int) >= 10 then 1 else 0 end as fiscal_year
-from coverage;
+from coverage
+where file_month >= (select first_month from params);
 
 -- An agency that really shrinks (headcount at the end of the year under half of the start)
 -- reports few separations because few people are left. That is not a gap.
@@ -103,13 +112,14 @@ from coverage group by all;
 -- Denominator: average of the September headcount before and at the end of the year.
 create or replace table hc_agency as
 select cast(substr(snapshot_month, 1, 4) as int) + case when substr(snapshot_month, 5, 2) >= '10' then 1 else 0 end as fiscal_year,
-       agency_code, sum(headcount) as headcount
+       agency_code, sum(headcount) as headcount, sum(core_headcount) as core_headcount
 from headcount where substr(snapshot_month, 5, 2) = '09' group by all;
 
 create or replace table agency_year as
 with s as (
     select agency_code, fiscal_year, reason, count(*) as n,
-           count(*) filter (where drp_indicator = 'Y') as drp
+           count(*) filter (where drp_indicator = 'Y') as drp,
+           count(*) filter (where is_core) as core
     from separations group by all
 ),
 piv as (
@@ -123,13 +133,15 @@ piv as (
         sum(n) filter (where reason = 'other')                  as other,
         sum(n)                                                  as separations,
         sum(drp)                                                as drp_separations,
-        sum(drp) filter (where reason = 'quit')                 as drp_quits
+        sum(drp) filter (where reason = 'quit')                 as drp_quits,
+        sum(core) filter (where reason = 'quit')                as core_quits
     from s group by all
 ),
 den as (
     select e.agency_code, e.fiscal_year,
            b.headcount as start_headcount, e.headcount as end_headcount,
-           (e.headcount + b.headcount) / 2.0 as avg_headcount
+           (e.headcount + b.headcount) / 2.0 as avg_headcount,
+           (e.core_headcount + b.core_headcount) / 2.0 as core_avg_headcount
     from hc_agency e join hc_agency b
       on b.agency_code = e.agency_code and b.fiscal_year = e.fiscal_year - 1
 )
@@ -153,6 +165,9 @@ select
     round(100.0 * coalesce(p.quits, 0) / d.avg_headcount, 2)       as quit_rate,
     round(100.0 * (coalesce(p.quits, 0) - coalesce(p.drp_quits, 0)) / d.avg_headcount, 2) as quit_rate_excl_drp,
     round(100.0 * coalesce(p.separations, 0) / d.avg_headcount, 2) as separation_rate,
+    round(d.core_avg_headcount)::int                              as core_avg_headcount,
+    coalesce(p.core_quits, 0)                                     as core_quits,
+    round(100.0 * coalesce(p.core_quits, 0) / nullif(d.core_avg_headcount, 0), 2) as core_quit_rate,
     coalesce(c.incomplete, false)                                 as incomplete,
     coalesce(c.gap_months, 0)                                     as gap_months,
     p.fiscal_year >= (select provisional_from_fy from params)     as provisional
@@ -164,7 +179,7 @@ where d.avg_headcount >= (select min_headcount from params);
 
 -- 5. Rates by occupational group, government wide, leaving out agency-years that fail coverage.
 create or replace table hc_occ as
-select cast(substr(snapshot_month, 1, 4) as int) as fiscal_year, agency_code, occupational_group, headcount
+select cast(substr(snapshot_month, 1, 4) as int) as fiscal_year, agency_code, occupational_group, headcount, core_headcount
 from headcount where substr(snapshot_month, 5, 2) = '09';
 
 create or replace table occupation_year as
@@ -173,12 +188,15 @@ with ok as (
 ),
 s as (
     select s.fiscal_year, s.occupational_group, count(*) filter (where reason = 'quit') as quits,
-           count(*) filter (where reason = 'quit' and drp_indicator = 'Y') as drp_quits, count(*) as separations
+           count(*) filter (where reason = 'quit' and drp_indicator = 'Y') as drp_quits,
+           count(*) filter (where reason = 'quit' and is_core) as core_quits, count(*) as separations
     from separations s join ok using (agency_code, fiscal_year)
     group by all
 ),
 d as (
-    select e.fiscal_year, e.occupational_group, sum((e.headcount + coalesce(b.headcount, e.headcount)) / 2.0) as avg_headcount
+    select e.fiscal_year, e.occupational_group,
+           sum((e.headcount + coalesce(b.headcount, e.headcount)) / 2.0) as avg_headcount,
+           sum((e.core_headcount + coalesce(b.core_headcount, e.core_headcount)) / 2.0) as core_avg_headcount
     from hc_occ e
     join ok on ok.agency_code = e.agency_code and ok.fiscal_year = e.fiscal_year
     left join hc_occ b on b.agency_code = e.agency_code and b.occupational_group = e.occupational_group
@@ -191,6 +209,8 @@ select s.fiscal_year, s.occupational_group,
        round(100.0 * s.quits / d.avg_headcount, 2)       as quit_rate,
        round(100.0 * (s.quits - s.drp_quits) / d.avg_headcount, 2) as quit_rate_excl_drp,
        round(100.0 * s.separations / d.avg_headcount, 2) as separation_rate,
+       s.core_quits,
+       round(100.0 * s.core_quits / nullif(d.core_avg_headcount, 0), 2) as core_quit_rate,
        s.fiscal_year >= (select provisional_from_fy from params) as provisional
 from s join d using (fiscal_year, occupational_group)
 where d.avg_headcount >= (select min_headcount from params)
@@ -209,6 +229,11 @@ with opm as (
            round(100.0 * sum(quits - drp_quits) / sum(avg_headcount), 2) as quit_rate,
            count(*) as months_or_agencies
     from agency_year where not incomplete and fiscal_year >= 2025 group by fiscal_year
+    union all
+    select fiscal_year, 'Federal civilian (OPM), permanent non-seasonal staff' as series,
+           round(100.0 * sum(core_quits) / sum(core_avg_headcount), 2) as quit_rate,
+           count(*) as months_or_agencies
+    from agency_year where not incomplete group by fiscal_year
 ),
 bls as (
     select year + case when month >= 10 then 1 else 0 end as fiscal_year,

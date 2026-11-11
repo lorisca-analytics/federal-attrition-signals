@@ -9,15 +9,16 @@ The clean tables in `data/clean/` (copied to `dashboard/data/`) are the only out
 3. Every table with a rate carries the flags that say whether to trust it: `provisional` everywhere, `incomplete` and `gap_months` on agency rows.
 4. Rates are per 100 employees. The denominator is the average of the September headcount before and at the end of the fiscal year.
 5. Fiscal years run October to September and are named by the year they end in (FY2025 = Oct 2024 to Sep 2025).
-6. `drp_` columns count separations OPM flags with `drp_indicator = Y` (the 2025 Deferred Resignation Program). They are a subset of the reason columns, never added to them.
+6. `core_` columns count only permanent or conditional appointments (tenure group 1 or 2) on regular schedules (not seasonal, not intermittent), in both quits and headcount.
+7. `drp_` columns count separations OPM flags with `drp_indicator = Y` (the 2025 Deferred Resignation Program). They are a subset of the reason columns, never added to them.
 
 ## Tables
 
 | Table | One row per | Use it for |
 |---|---|---|
-| `agency_year` | agency and fiscal year | Rates and reasons by agency. Rank only rows where `incomplete` is false. |
+| `agency_year` | agency and fiscal year | Rates and reasons by agency, all staff and permanent staff. Rank only rows where `incomplete` is false. |
 | `occupation_year` | occupational group and fiscal year | Rates by job type. Incomplete agency-years are already left out. |
-| `reason_year` | fiscal year and reason segment | Why people left, government wide. Segments: Quit, Retirement or early out, DRP-flagged exit, Reduction in force, Transfer, termination or other. |
+| `reason_year` | fiscal year and reason segment | Why people left, across covered agencies. Segments: Quit, Retirement or early out, DRP-flagged exit, Reduction in force, Transfer, termination or other. |
 | `benchmark_year` | fiscal year and series | OPM federal quit rate next to BLS industries. |
 | `agency_month` | agency and file month | Separations as reported each month, the usual level, and whether the month failed the check. |
 | `coverage_gaps` | agency and file month | Only the months that failed the check. |
@@ -38,4 +39,5 @@ The clean tables in `data/clean/` (copied to `dashboard/data/`) are the only out
 | reason | OPM `separation_category_code`: SC quit, SD and SG retirement, SE early out, SH reduction in force, SA and SB transfer, SJ termination or expired appointment, others "other" |
 | fiscal_year | OPM `personnel_action_effective_date_yyyymm` |
 | headcount | sum of OPM employment file `count` per September snapshot |
+| core (permanent staff) | OPM `tenure_code` 1 or 2 and `work_schedule_code` F, P, S, R or B |
 | BLS series | `JTS<industry>000000000QUR`, seasonally adjusted quits rate |

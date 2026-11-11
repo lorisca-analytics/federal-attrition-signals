@@ -81,21 +81,25 @@
   const fySel = document.getElementById("fySel");
   fySel.innerHTML = years.slice().reverse().map(y => `<option value="${y}">${fyLabel(y)}${y > lastFull ? " (provisional)" : ""}</option>`).join("");
   fySel.value = lastFull;
-  const drpToggle = document.getElementById("drpToggle");
+  const whoSel = document.getElementById("whoSel");
+  const WHO = {
+    core: { rate: r => r.core_quit_rate, note: "Permanent and conditional appointments on regular schedules only. Seasonal, intermittent and temporary staff are left out of both quits and headcount." },
+    all: { rate: r => r.quit_rate, note: "All staff and all quits, including seasonal and temporary jobs and any quit flagged as part of the Deferred Resignation Program." },
+    nodrp: { rate: r => r.quit_rate_excl_drp, note: "All staff, with quits flagged as part of the Deferred Resignation Program left out." },
+  };
 
   function drawRank() {
-    const fy = +fySel.value, noDrp = drpToggle.checked;
+    const fy = +fySel.value, who = WHO[whoSel.value];
     const rows = agencyYear.filter(r => r.fiscal_year === fy && r.avg_headcount >= 5000);
-    const ranked = rows.filter(r => !r.incomplete)
-      .map(r => ({ r, v: noDrp ? r.quit_rate_excl_drp : r.quit_rate }))
+    const ranked = rows.filter(r => !r.incomplete && who.rate(r) !== "" && who.rate(r) != null)
+      .map(r => ({ r, v: who.rate(r) }))
       .sort((a, b) => b.v - a.v);
     C.hbars(document.getElementById("chartRank"), ranked.map(({ r, v }) => ({
       label: title(r.agency), value: v,
-      tipHtml: `<strong>${title(r.agency)}</strong><br>${r.quits.toLocaleString("en-US")} quits${r.drp_quits ? ` (${r.drp_quits.toLocaleString("en-US")} DRP-flagged)` : ""}<br>Average headcount ${r.avg_headcount.toLocaleString("en-US")}`
+      tipHtml: `<strong>${title(r.agency)}</strong><br>All quits: ${r.quits.toLocaleString("en-US")}${r.drp_quits ? ` (${r.drp_quits.toLocaleString("en-US")} DRP-flagged)` : ""}<br>Permanent, regular schedule: ${r.core_quits.toLocaleString("en-US")}<br>Average headcount ${r.avg_headcount.toLocaleString("en-US")}`
     })), { aria: `Quit rate by agency, ${fyLabel(fy)}` });
     document.getElementById("capRank").textContent =
-      `${fyLabel(fy)}${fy > lastFull ? ", provisional" : ""}. Agencies with an average of at least 5,000 employees. ` +
-      (noDrp ? "DRP-flagged quits left out." : "All quits, including any flagged as part of the Deferred Resignation Program.");
+      `${fyLabel(fy)}${fy > lastFull ? ", provisional" : ""}. Agencies with an average of at least 5,000 employees. ${who.note}`;
     const out = rows.filter(r => r.incomplete);
     document.getElementById("notRanked").innerHTML = out.length
       ? `<strong>Not ranked in ${fyLabel(fy)}:</strong> ${out.map(r => `${title(r.agency)} (${r.gap_months} month${r.gap_months > 1 ? "s" : ""} failed the coverage check)`).join(", ")}.`
@@ -124,6 +128,7 @@
     { key: "Federal civilian (OPM, covered agencies)", name: "Federal, OPM", color: "var(--s1)" },
     { key: "Federal (BLS)", name: "Federal, BLS", color: "var(--s2)" },
     { key: "Total nonfarm (BLS)", name: "All jobs, BLS", color: "var(--s3)" },
+    { key: "Federal civilian (OPM), permanent non-seasonal staff", name: "Federal, OPM, permanent", color: "var(--s4)" },
   ];
   const bYears = [...new Set(bench.map(r => r.fiscal_year))].sort();
   const bSeries = BENCH.map(s => ({ ...s, values: bYears.map(y => { const r = bench.find(b => b.fiscal_year === y && b.series === s.key); return r ? r.quit_rate : null; }) }));
@@ -132,7 +137,7 @@
   C.table(document.getElementById("tableBench"), ["Fiscal year", ...BENCH.map(s => s.name), "Federal, OPM, without DRP quits"],
     bYears.map((y, i) => [fyLabel(y), ...bSeries.map(s => s.values[i] == null ? "" : C.fmt(s.values[i])),
       (noDrpRows.find(r => r.fiscal_year === y) || { quit_rate: "" }).quit_rate]),
-    [false, true, true, true, true]);
+    [false, true, true, true, true, true]);
   const drawBench = () => C.lines(document.getElementById("chartBench"), bYears.map(String), bSeries,
     { height: 300, right: 110, aria: "Yearly quit rate, federal and all jobs" });
 
@@ -142,9 +147,10 @@
   fySelOcc.innerHTML = oYears.slice().reverse().map(y => `<option value="${y}">${fyLabel(y)}${y > lastFull ? " (provisional)" : ""}</option>`).join("");
   fySelOcc.value = lastFull;
   function drawOcc() {
-    const fy = +fySelOcc.value, noDrp = document.getElementById("drpToggleOcc").checked;
-    const val = r => noDrp ? r.quit_rate_excl_drp : r.quit_rate;
-    const rows = occYear.filter(r => r.fiscal_year === fy && r.avg_headcount >= 10000).sort((a, b) => val(b) - val(a));
+    const fy = +fySelOcc.value, who = WHO[document.getElementById("whoSelOcc").value];
+    const val = who.rate;
+    const rows = occYear.filter(r => r.fiscal_year === fy && r.avg_headcount >= 10000 && val(r) !== "" && val(r) != null).sort((a, b) => val(b) - val(a));
+    document.getElementById("capOcc").textContent = `${fyLabel(fy)}${fy > lastFull ? ", provisional" : ""}. Groups with at least 10,000 employees, covered agencies only. ${who.note}`;
     C.hbars(document.getElementById("chartOcc"), rows.map(r => ({
       label: title(r.occupational_group.replace(/ (GROUP|FAMILY)$/, "")), value: val(r),
       tipHtml: `<strong>${title(r.occupational_group)}</strong><br>${r.quits.toLocaleString("en-US")} quits<br>Average headcount ${r.avg_headcount.toLocaleString("en-US")}`
@@ -152,16 +158,16 @@
   }
 
   /* 6. Gaps table */
-  C.table(document.getElementById("tableGaps"), ["Agency", "File month", "Reported", "Usual (median of prior 12)"],
+  C.table(document.getElementById("tableGaps"), ["Agency", "File month", "Reported", "Usual (median of previous 12 months)"],
     gaps.slice().reverse().map(g => [title(g.agency), monthLabel(g.file_month), g.separations.toLocaleString("en-US"), Math.round(g.baseline).toLocaleString("en-US")]),
     [false, false, true, true]);
 
   function drawAll() { drawMonthly(); drawRank(); drawReason(); drawBench(); drawOcc(); }
   agencySel.addEventListener("change", drawMonthly);
   fySel.addEventListener("change", drawRank);
-  drpToggle.addEventListener("change", drawRank);
+  whoSel.addEventListener("change", drawRank);
   fySelOcc.addEventListener("change", drawOcc);
-  document.getElementById("drpToggleOcc").addEventListener("change", drawOcc);
+  document.getElementById("whoSelOcc").addEventListener("change", drawOcc);
   let t;
   window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(drawAll, 150); });
   drawAll();

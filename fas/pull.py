@@ -32,6 +32,9 @@ RAW = Path(__file__).resolve().parent.parent / "data" / "raw"
 
 # Headcount is monthly from Jul 2011. Before that OPM only has quarterly snapshots.
 FIRST_MONTH = "201107"
+# Separations start 12 months earlier, only so the coverage check has a full year of
+# history for the first months of the window. They are not counted in any rate.
+FIRST_SEPARATIONS_MONTH = "201007"
 # One headcount snapshot per fiscal year end (September) is enough for annual rates.
 # Monthly headcount would be about 9 GB, see DECISIONS.md.
 EMPLOYMENT_MONTHS = {"09"}
@@ -137,7 +140,8 @@ def wanted_files(dataset: str, listing: list[dict]) -> list[Wanted]:
     for x in listing:
         if not x.get("current"):
             continue
-        if x["year"] + x["month"] < FIRST_MONTH:
+        first = FIRST_SEPARATIONS_MONTH if dataset == "separations" else FIRST_MONTH
+        if x["year"] + x["month"] < first:
             continue
         if dataset == "employment" and x["month"] not in EMPLOYMENT_MONTHS:
             continue

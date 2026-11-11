@@ -7,14 +7,14 @@
 <meta name="description" content="Federal quit rates by agency and job type, FY2012 to FY2026, with a coverage check that keeps missing data from looking like retention.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <header class="hero">
   <div class="wrap">
     <p class="label">Federal workforce · FY2012 to FY2026</p>
     <h1>Who leaves federal agencies <em>first</em></h1>
-    <p class="lede">Quit rates by agency and job type from OPM's public workforce files. Every month an agency's data looks incomplete is held out of the ranking, so missing data never reads as people staying.</p>
+    <p class="lede">Quit rates by agency and job type from OPM's public workforce files. Months where an agency's report falls far below its usual level are held out of the ranking, so a reporting gap doesn't read as people staying.</p>
     <p class="meta" id="meta"></p>
   </div>
 </header>
@@ -23,7 +23,7 @@
   <section>
     <p class="label">Check first</p>
     <h2>Separations reported each month</h2>
-    <p class="note">A sudden drop to almost nothing, while headcount stays the same, is a reporting gap. Months that fail the check are marked and their year is left out of every ranking below.</p>
+    <p class="note">A month fails the check when an agency that usually reports at least 20 separations sends under a quarter of both its median for the previous 12 months and the same month a year earlier. Failing months are ringed, and that agency's fiscal year is left out of every ranking below.</p>
     <div class="controls"><label>Agency <select id="agencySel"></select></label></div>
     <figure>
       <div class="chart" id="chartMonthly"></div>
@@ -36,7 +36,11 @@
     <h2>Quits per 100 employees, by agency</h2>
     <div class="controls">
       <label>Fiscal year <select id="fySel"></select></label>
-      <label class="check"><input type="checkbox" id="drpToggle"> Leave out DRP-flagged quits</label>
+      <label>Who counts <select id="whoSel">
+        <option value="core">Permanent staff on regular schedules</option>
+        <option value="all">All staff</option>
+        <option value="nodrp">All staff, without DRP-flagged quits</option>
+      </select></label>
     </div>
     <figure>
       <div class="chart" id="chartRank"></div>
@@ -62,7 +66,7 @@
     <figure>
       <div class="legend" id="legendBench"></div>
       <div class="chart" id="chartBench"></div>
-      <figcaption>Yearly quit rate per 100 employees. BLS rates are monthly rates added over the twelve months of each fiscal year. BLS "Federal" and OPM cover different groups of employees (OPM leaves out the Postal Service and the intelligence agencies, for example), so read the gap between them as a range, not an error.</figcaption>
+      <figcaption>Yearly quit rate per 100 employees. BLS rates are monthly rates added over the twelve months of each fiscal year. OPM counts personnel records for the agencies it covers and leaves out the Postal Service, the intelligence agencies and some other groups. BLS estimates come from a monthly survey of about 21,000 employers. The two measure different groups, so the space between them is a range.</figcaption>
     </figure>
     <details><summary>Show as a table</summary><div id="tableBench" class="tablewrap"></div></details>
   </section>
@@ -72,11 +76,15 @@
     <h2>Quits per 100 employees, by occupational group</h2>
     <div class="controls">
       <label>Fiscal year <select id="fySelOcc"></select></label>
-      <label class="check"><input type="checkbox" id="drpToggleOcc"> Leave out DRP-flagged quits</label>
+      <label>Who counts <select id="whoSelOcc">
+        <option value="core">Permanent staff on regular schedules</option>
+        <option value="all">All staff</option>
+        <option value="nodrp">All staff, without DRP-flagged quits</option>
+      </select></label>
     </div>
     <figure>
       <div class="chart" id="chartOcc"></div>
-      <figcaption>Groups with at least 10,000 employees. Covered agencies only.</figcaption>
+      <figcaption id="capOcc">Groups with at least 10,000 employees. Covered agencies only.</figcaption>
     </figure>
   </section>
 
@@ -92,7 +100,7 @@
 </main>
 
 <div class="tip" id="tip" role="status" aria-live="polite"></div>
-<script src="charts.js?v=3"></script>
-<script src="app.js?v=2"></script>
+<script src="charts.js?v=4"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

@@ -14,15 +14,17 @@ Each entry: what I had to choose, the options, what I picked, and what it cost.
 - **Options:** R end to end, or Python and SQL.
 - **Picked:** Python and SQL (DuckDB, which reads the Parquet files directly).
 - **Why:** My other public work is in Python and SQL, so a reader sees one consistent toolset. DuckDB keeps every table rule in one SQL file that someone who doesn't read Python can still check.
-- **Gave up:** R would have tied this project to an HR analytics certificate I hold in R.
+- **Gave up:** R's tidyverse would have made some of the reshaping shorter.
 
-## 3. A low month is a gap, not good news
+## 3. A low month is checked before it is believed
 
 - **Options:** (a) count whatever the file says, (b) treat a missing month as zero, (c) estimate the missing month, (d) flag it and keep that agency-year out of rankings.
-- **Picked:** (d). A file month is a gap when an agency that normally reports at least 20 separations a month reports under a quarter of its own median for the previous 12 months. Any gap month marks that agency's fiscal year incomplete. Incomplete years are listed, not ranked.
+- **Picked:** (d). A file month is a gap when an agency that normally reports at least 20 separations a month reports under a quarter of both its own median for the previous 12 months and the same month a year earlier. Any gap month marks that agency's fiscal year incomplete. Incomplete years are listed, not ranked.
 - **Why:** In the Sep 2026 file the Army reports 9 separations and the Air Force 26, against usual months of about 1,860 and 1,300, while both still have over 150,000 people on the rolls. Options (a) and (b) would rank them as the most stable agencies in the government. Option (c) invents data.
 - **Exception:** an agency whose headcount fell by more than half during the year is not flagged. Few separations is expected when few people are left (the Agency for International Development in FY2026).
-- **Gave up:** a ranking with fewer agencies in affected years. The thresholds (20, a quarter, 12 months) are judgment calls. They live in one place (`fas/build.py`, `PARAMS`) and the tests pin their behaviour.
+- **Fixed after review:** my first version compared each month only with the median of whatever months came before it. For the first year of the window that was 1 to 11 months, so Agriculture's normal winter lows in early 2012 were flagged against its fall peak. Now the pull fetches 12 extra months (Jul 2010 to Jun 2011) used only as a baseline, the median needs a full 12 months, and the same-month-a-year-earlier test keeps seasonal lows from being flagged.
+- **Sensitivity** (`scripts/sensitivity.py`, `docs/sensitivity.txt`): at a quarter and 20 a month, 17 agency-months fail. A fifth gives 14, a third gives 37, a half gives 120. Between a fifth and a quarter the result is stable. Past a third the check starts flagging ordinary dips.
+- **Gave up:** a ranking with fewer agencies in affected years. The thresholds are judgment calls. They live in one place (`fas/build.py`, `PARAMS`) and the tests pin their behaviour.
 
 ## 4. Count by the date a person left, not the file it arrived in
 
@@ -34,8 +36,8 @@ Each entry: what I had to choose, the options, what I picked, and what it cost.
 
 ## 5. Denominator: average of two September headcounts
 
-- **Options:** monthly headcount (about 50 MB a month, roughly 9 GB for the window), quarterly, or the September snapshot at each fiscal year end.
-- **Picked:** the average of the September headcount before and at the end of each fiscal year. 16 snapshots, about 800 MB.
+- **Options:** monthly headcount (about 69 MB a month, roughly 12.6 GB for the window), quarterly, or the September snapshot at each fiscal year end.
+- **Picked:** the average of the September headcount before and at the end of each fiscal year. 16 snapshots, about 1.1 GB.
 - **Why:** The rates are yearly, and an average of the two ends absorbs most of a year's growth or shrinkage.
 - **Gave up:** monthly rates. An agency that shrinks to almost nothing inside one year can show a separation rate above 100 per 100 (the Agency for International Development in FY2025: 4,803 separations on an average of 2,951). Start and end headcount are carried in the table so a reader sees why.
 
@@ -59,6 +61,7 @@ Each entry: what I had to choose, the options, what I picked, and what it cost.
 - **Picked:** track each month by OPM's version number and checksum, keep superseded versions.
 - **Why:** OPM revises months after release (up to version 5 in the current listing). A pull that only checks "is this month here" would never pick up a correction. Keeping the old version lets me compare what changed.
 - **Gave up:** disk space, about 1.2 GB for the raw files. They stay out of the repo.
+- **Tested for real:** when decision 3 needed 12 earlier months, the next run pulled those 12 files and skipped the 199 already on disk.
 
 ## 9. Small agencies are not ranked
 
@@ -66,3 +69,10 @@ Each entry: what I had to choose, the options, what I picked, and what it cost.
 - **Picked:** tables keep agencies with an average of 1,000 or more employees. The dashboard ranking shows 5,000 or more. Occupational groups need 10,000 or more.
 - **Why:** At 1,000 employees, ten extra quits move the rate by a full point.
 - **Gave up:** small agencies, some of which have the highest rates in the tables.
+
+## 10. Permanent staff get their own rate
+
+- **Options:** rank all staff together, drop seasonal and temporary jobs entirely, or carry both rates.
+- **Picked:** carry both. The permanent-staff rate counts only tenure groups 1 and 2 (career and career-conditional appointments) on regular schedules (full time, part time, job sharing, phased retirement), in both the quits and the headcount. The dashboard defaults to it.
+- **Why:** an external review of my first draft pointed out that the agencies at the top of the raw ranking are the big seasonal employers. In FY2024, seasonal, intermittent and temporary jobs were about 8% of headcount and about 28% of quits in the agencies I could rank. Commerce's quit rate drops from 4.89 to 1.85 when they are left out. A planner deciding where permanent employees leave needs the second ranking.
+- **Gave up:** simplicity. Tenure group 0 also holds senior executives, so they fall out of the permanent rate with the temporaries. They are a small group, and the all-staff rate still includes them.

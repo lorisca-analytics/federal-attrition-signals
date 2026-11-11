@@ -101,12 +101,13 @@ def test_non_parquet_download_is_refused(tmp_path):
     assert not (tmp_path / "manifest.json").exists()
 
 
-def test_only_september_headcount_and_months_from_jul_2011():
+def test_only_september_headcount_and_window_start():
     listing = [{"year": y, "month": m, "version": 1, "current": True}
-               for y, m in [("2011", "06"), ("2011", "07"), ("2011", "09"), ("2012", "03")]]
+               for y, m in [("2010", "06"), ("2010", "07"), ("2011", "06"), ("2011", "07"), ("2011", "09"), ("2012", "03")]]
     sep = pull.wanted_files("separations", listing)
     emp = pull.wanted_files("employment", listing)
-    assert [w.year + w.month for w in sep] == ["201107", "201109", "201203"]
+    # separations reach back 12 more months for the coverage baseline
+    assert [w.year + w.month for w in sep] == ["201007", "201106", "201107", "201109", "201203"]
     assert [w.year + w.month for w in emp] == ["201109"]
 
 

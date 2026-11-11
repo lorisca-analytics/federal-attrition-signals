@@ -17,7 +17,8 @@ GOOD_AGENCY = {
     "fiscal_year": 2024, "agency_code": "VA", "agency": "DEPARTMENT OF VETERANS AFFAIRS",
     "start_headcount": 1000, "end_headcount": 1000, "avg_headcount": 1000, "separations": 10, "quits": 4, "retirements": 3, "early_outs": 0,
     "reductions_in_force": 0, "transfers": 1, "terminations_or_expired": 1, "other": 1,
-    "drp_separations": 0, "drp_quits": 0, "quit_rate": 0.4, "quit_rate_excl_drp": 0.4, "separation_rate": 1.0, "incomplete": "false", "gap_months": 0, "provisional": "false",
+    "drp_separations": 0, "drp_quits": 0, "quit_rate": 0.4, "quit_rate_excl_drp": 0.4, "separation_rate": 1.0,
+    "core_avg_headcount": 900, "core_quits": 3, "core_quit_rate": 0.33, "incomplete": "false", "gap_months": 0, "provisional": "false",
 }
 
 
@@ -25,7 +26,8 @@ def good_folder(tmp_path):
     write_table(tmp_path, "agency_year", [GOOD_AGENCY])
     write_table(tmp_path, "occupation_year", [{
         "fiscal_year": 2024, "occupational_group": "LEGAL AND KINDRED GROUP", "avg_headcount": 50,
-        "separations": 2, "quits": 1, "drp_quits": 0, "quit_rate": 2.0, "quit_rate_excl_drp": 2.0, "separation_rate": 4.0, "provisional": "false"}])
+        "separations": 2, "quits": 1, "drp_quits": 0, "quit_rate": 2.0, "quit_rate_excl_drp": 2.0, "separation_rate": 4.0,
+        "core_quits": 1, "core_quit_rate": 2.5, "provisional": "false"}])
     write_table(tmp_path, "benchmark_year", [{
         "fiscal_year": 2024, "series": "Federal (BLS)", "quit_rate": 7.2, "provisional": "false"}])
     write_table(tmp_path, "reason_year", [{
