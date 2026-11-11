@@ -58,7 +58,7 @@ Options I turned down, and what each choice cost, are in [DECISIONS.md](DECISION
 
 ## Results
 
-**Among permanent staff, the same agencies stay near the top.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 complete years from FY2012 to FY2024. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. The gap to the average is modest: in FY2024 Veterans Affairs' permanent-staff rate was 3.50 per 100 and the Army's 2.98, against 2.80 across all permanent staff in the agencies I could rank. Why they stay high is the next question, and this data alone doesn't answer it. On the raw rate, Commerce is in the top five in all 13 years, Interior in 12 and Agriculture in 11. None of the three reaches the top five for permanent staff in any of those years.
+**Among permanent staff, the same agencies stay near the top.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 complete years from FY2012 to FY2024. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. The result is the same with a size floor of 10,000 or 20,000 employees instead of 5,000. The gap to the average is modest: in FY2024 Veterans Affairs' permanent-staff rate was 3.50 per 100 and the Army's 2.98, against 2.80 across all permanent staff in the agencies I could rank. Why they stay high is the next question, and this data alone doesn't answer it. On the raw rate, Commerce is in the top five in all 13 years, Interior in 12 and Agriculture in 11. None of the three reaches the top five for permanent staff in any of those years.
 
 **By job type, the spread is wide.** Among occupational groups with at least 10,000 employees in FY2024, permanent staff in general services and support work quit at 7.44 per 100, and in food preparation and serving at 5.84. At the low end, equipment, facilities and services was 1.56 and information technology, with about 98,000 people, was 1.62.
 
@@ -86,7 +86,7 @@ python -m pytest -q         # tests use small synthetic files, no network
 python -m http.server 8000 --directory dashboard
 ```
 
-`python scripts/findings.py` prints every number quoted in this README into `docs/findings.json`. `python scripts/sensitivity.py` reruns the threshold table in `docs/sensitivity.txt`. `python scripts/late_record_check.py 2026 09` reruns the late-record check.
+`python scripts/findings.py` prints every number quoted in this README into `docs/findings.json`. `python scripts/sensitivity.py` reruns the threshold table in `docs/sensitivity.txt`. `python scripts/profile.py` profiles the raw files (nulls, codes, date ranges) into `docs/data-profile.json`. `python scripts/late_record_check.py 2026 09` reruns the late-record check.
 
 ## Repo map
 

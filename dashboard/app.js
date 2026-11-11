@@ -57,6 +57,17 @@
   document.getElementById("meta").textContent =
     `Data through ${monthLabel(lastMonth)}. FY${lastFull + 1} is provisional: late records for it are still arriving.`;
 
+  /* 0. Headline numbers, computed from the CSVs */
+  const benchRate = (fy, series) => (bench.find(b => b.fiscal_year === fy && b.series === series) || {}).quit_rate;
+  const lastDrp = Math.max(...bench.filter(b => b.series.includes("without DRP") && !b.provisional).map(b => b.fiscal_year));
+  document.getElementById("kpiGaps").textContent = gaps.length;
+  document.getElementById("kpiCore").textContent = C.fmt(benchRate(lastFull, "Federal civilian (OPM), permanent non-seasonal staff"));
+  document.getElementById("kpiCoreL").textContent = `quits per 100 permanent staff, FY${lastFull}`;
+  document.getElementById("kpiAll").textContent = C.fmt(benchRate(lastFull, "Federal civilian (OPM, covered agencies)"));
+  document.getElementById("kpiAllL").textContent = `quits per 100, all staff, FY${lastFull}`;
+  document.getElementById("kpiDrp").textContent = C.fmt(benchRate(lastDrp, "Federal civilian (OPM), quits without DRP"));
+  document.getElementById("kpiDrpL").textContent = `quits per 100, all staff, without DRP-flagged quits, FY${lastDrp}`;
+
   /* 1. Monthly reports per agency */
   const agencySel = document.getElementById("agencySel");
   const byAgency = {};
@@ -165,10 +176,32 @@
     })), { aria: `Quit rate by occupational group, ${fyLabel(fy)}` });
   }
 
-  /* 6. Gaps table */
-  C.table(document.getElementById("tableGaps"), ["Agency", "File month", "Reported", "Usual (median of previous 12 months)"],
-    gaps.slice().reverse().map(g => [title(g.agency), monthLabel(g.file_month), g.separations.toLocaleString("en-US"), Math.round(g.baseline).toLocaleString("en-US")]),
-    [false, false, true, true]);
+  /* 6. Gaps table, sortable by clicking a column header */
+  const gapCols = [
+    { head: "Agency", key: g => title(g.agency), show: g => title(g.agency) },
+    { head: "File month", key: g => g.file_month, show: g => monthLabel(g.file_month) },
+    { head: "Reported", key: g => g.separations, show: g => g.separations.toLocaleString("en-US"), n: true },
+    { head: "Usual (median of previous 12 months)", key: g => g.baseline, show: g => Math.round(g.baseline).toLocaleString("en-US"), n: true },
+  ];
+  let gapSort = { i: 1, dir: -1 };
+  function drawGaps() {
+    const rows = gaps.slice().sort((a, b) => {
+      const x = gapCols[gapSort.i].key(a), y = gapCols[gapSort.i].key(b);
+      return (x < y ? -1 : x > y ? 1 : 0) * gapSort.dir;
+    });
+    C.table(document.getElementById("tableGaps"),
+      gapCols.map((c, i) => c.head + (i === gapSort.i ? (gapSort.dir > 0 ? " ▲" : " ▼") : "")),
+      rows.map(g => gapCols.map(c => c.show(g))), gapCols.map(c => !!c.n));
+    document.querySelectorAll("#tableGaps th").forEach((th, i) => {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      th.setAttribute("aria-sort", i === gapSort.i ? (gapSort.dir > 0 ? "ascending" : "descending") : "none");
+      const go = () => { gapSort = { i, dir: gapSort.i === i ? -gapSort.dir : -1 }; drawGaps(); };
+      th.addEventListener("click", go);
+      th.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+    });
+  }
+  drawGaps();
 
   function drawAll() { drawMonthly(); drawRank(); drawReason(); drawBench(); drawOcc(); }
   agencySel.addEventListener("change", drawMonthly);

@@ -1,0 +1,117 @@
+{
+ "rows": 3765478,
+ "columns": {
+  "agency_code": {
+   "nulls": 0,
+   "blank_or_invalid": 0,
+   "distinct_values": 142
+  },
+  "occupational_group": {
+   "nulls": 22,
+   "blank_or_invalid": 0,
+   "distinct_values": 61
+  },
+  "separation_category_code": {
+   "nulls": 0,
+   "blank_or_invalid": 0,
+   "distinct_values": 9
+  },
+  "personnel_action_effective_date_yyyymm": {
+   "nulls": 0,
+   "blank_or_invalid": 0,
+   "distinct_values": 205
+  },
+  "tenure_code": {
+   "nulls": 0,
+   "blank_or_invalid": 696,
+   "distinct_values": 6
+  },
+  "work_schedule_code": {
+   "nulls": 0,
+   "blank_or_invalid": 19140,
+   "distinct_values": 11
+  },
+  "drp_indicator": {
+   "nulls": 0,
+   "blank_or_invalid": 0,
+   "distinct_values": 2
+  },
+  "count": {
+   "nulls": 0,
+   "blank_or_invalid": 0,
+   "distinct_values": 1
+  }
+ },
+ "count_values": [
+  {
+   "count": "1",
+   "n": 3765478
+  }
+ ],
+ "effective_range": {
+  "min": "200908",
+  "max": "202609"
+ },
+ "effective_after_file_month": 0,
+ "effective_more_than_12_months_before_file": 8701,
+ "category_codes": [
+  {
+   "code": "SC",
+   "label": "QUIT",
+   "n": 1344540
+  },
+  {
+   "code": "SD",
+   "label": "RETIREMENT - VOLUNTARY",
+   "n": 960183
+  },
+  {
+   "code": "SJ",
+   "label": "TERMINATION (EXPIRED APPT/OTHER)",
+   "n": 667357
+  },
+  {
+   "code": "SA",
+   "label": "TRANSFER OUT - INDIVIDUAL TRANSFER",
+   "n": 410783
+  },
+  {
+   "code": "SL",
+   "label": "OTHER SEPARATION",
+   "n": 223089
+  },
+  {
+   "code": "SG",
+   "label": "RETIREMENT - OTHER",
+   "n": 69180
+  },
+  {
+   "code": "SE",
+   "label": "RETIREMENT - EARLY OUT",
+   "n": 47622
+  },
+  {
+   "code": "SB",
+   "label": "TRANSFER OUT - MASS TRANSFER",
+   "n": 27316
+  },
+  {
+   "code": "SH",
+   "label": "REDUCTION IN FORCE (RIF)",
+   "n": 15408
+  }
+ ],
+ "occupational_group_null_by_year": [
+  {
+   "year": "2026",
+   "null_share": 0.0001
+  }
+ ],
+ "headcount_rows": 34177479,
+ "headcount_blank_tenure_or_schedule": 0.001,
+ "separations_blank_tenure_or_schedule": 0.0053,
+ "agency_codes_without_headcount": {
+  "n": 0,
+  "rows": 0
+ }
+}

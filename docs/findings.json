@@ -134,12 +134,12 @@
  ],
  "top5_streaks_core_fy2012_2024": [
   {
-   "agency": "DEPARTMENT OF THE ARMY",
+   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
    "years_in_top5": 13,
    "years_ranked": 13
   },
   {
-   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+   "agency": "DEPARTMENT OF THE ARMY",
    "years_in_top5": 13,
    "years_ranked": 13
   },
@@ -178,6 +178,86 @@
    "core_quit_rate": 3.5
   }
  ],
+ "core_top5_by_size_floor": {
+  "5000": [
+   {
+    "agency": "DEPARTMENT OF THE ARMY",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 24
+   },
+   {
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 24
+   },
+   {
+    "agency": "DEPARTMENT OF DEFENSE",
+    "years_in_top5": 12,
+    "years_ranked": 13,
+    "agencies_ranked": 24
+   },
+   {
+    "agency": "DEPARTMENT OF HOMELAND SECURITY",
+    "years_in_top5": 11,
+    "years_ranked": 13,
+    "agencies_ranked": 24
+   }
+  ],
+  "10000": [
+   {
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 20
+   },
+   {
+    "agency": "DEPARTMENT OF THE ARMY",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 20
+   },
+   {
+    "agency": "DEPARTMENT OF DEFENSE",
+    "years_in_top5": 12,
+    "years_ranked": 13,
+    "agencies_ranked": 20
+   },
+   {
+    "agency": "DEPARTMENT OF HOMELAND SECURITY",
+    "years_in_top5": 11,
+    "years_ranked": 13,
+    "agencies_ranked": 20
+   }
+  ],
+  "20000": [
+   {
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 14
+   },
+   {
+    "agency": "DEPARTMENT OF THE ARMY",
+    "years_in_top5": 13,
+    "years_ranked": 13,
+    "agencies_ranked": 14
+   },
+   {
+    "agency": "DEPARTMENT OF DEFENSE",
+    "years_in_top5": 12,
+    "years_ranked": 13,
+    "agencies_ranked": 14
+   },
+   {
+    "agency": "DEPARTMENT OF HOMELAND SECURITY",
+    "years_in_top5": 11,
+    "years_ranked": 13,
+    "agencies_ranked": 14
+   }
+  ]
+ },
  "core_share_fy2024": {
   "core_share_of_quits": 71.9,
   "core_share_of_headcount": 91.8

@@ -92,6 +92,15 @@ f["raw_leaders_core_top5_years"] = rows("""
 f["core_rate_fy2024_va_army"] = rows("""
     select agency_code, core_quit_rate from agency_year
     where fiscal_year = 2024 and agency_code in ('VA', 'AR') order by 1""")
+f["core_top5_by_size_floor"] = {
+    str(floor): rows(f"""
+        with r as (
+            select fiscal_year, agency, rank() over (partition by fiscal_year order by core_quit_rate desc) as rk,
+                   count(*) over (partition by fiscal_year) as field
+            from agency_year where not incomplete and fiscal_year <= 2024 and avg_headcount >= {floor})
+        select agency, count(*) filter (where rk <= 5) as years_in_top5, count(*) as years_ranked, max(field) as agencies_ranked
+        from r group by agency having count(*) filter (where rk <= 5) >= 10 order by 2 desc""")
+    for floor in (5000, 10000, 20000)}
 f["core_share_fy2024"] = rows("""
     select round(100.0 * sum(core_quits) / sum(quits), 1) as core_share_of_quits,
            round(100.0 * sum(core_avg_headcount) / sum(avg_headcount), 1) as core_share_of_headcount
