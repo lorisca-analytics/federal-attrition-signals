@@ -10,7 +10,7 @@ How each finding in the README can be checked, and why each call was made.
 |---|---|
 | 183 monthly files, about 3.8 million rows, 12 baseline-only files | `separations_files_in_window`, `separation_rows_in_window`, `separations_files_baseline_only` |
 | Army 2,430 then 9, Air Force 2,220 then 26, usual months about 1,860 and 1,300 | `army_airforce` |
-| Army 180,217 and Air Force 150,492 employed in Sep 2026 | `army_airforce_headcount_202609` |
+| Army 212,550 and Air Force over 160,000 employed in Sep 2025 | `army_headcount` |
 | 17 agency-months fail the check | `gap_months_total`, `gap_agencies` |
 | About one in five rows in the Sep 2026 file left earlier | `late_share_202609` |
 | About 110,000 exit-program separations in FY2025 | `drp_exits_2025_all` (`drp_exits_2025_covered` for agencies I could rank) |
@@ -33,7 +33,7 @@ The full reasoning, with the options I turned down, is in [DECISIONS.md](DECISIO
 - **Coverage before ranking**, because a missing submission and a calm month look the same in the raw counts.
 - **Permanent staff ranked apart**, because seasonal and temporary jobs end on a schedule and push seasonal employers to the top.
 - **Effective month over file month**, because a person belongs to the year they left.
-- **Exit programs apart**, because a program that offered paid leave before separation changes who leaves and when, and mixing it in hides the ordinary quit rate.
+- **Exit programs apart**, because a program that offered paid leave before separation can change who leaves and when, and mixing it in would hide the ordinary quit rate.
 - **September headcounts**, because yearly rates don't need 12.6 GB of monthly snapshots.
 - **A data contract with a checker in CI**, because the dashboard and anyone reusing the CSVs depend on the columns staying put.
 

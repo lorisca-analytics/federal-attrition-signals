@@ -37,7 +37,15 @@
   const [agencyYear, occYear, bench, reasons, months, gaps] = await Promise.all(
     ["agency_year", "occupation_year", "benchmark_year", "reason_year", "agency_month", "coverage_gaps"].map(load));
 
-  const title = s => s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
+  // OPM cuts agency names at 40 characters. Full names for the ones that get cut.
+  const FULL = {
+    "DEPARTMENT OF HOUSING AND URBAN DEVELOPM": "Department of Housing and Urban Development",
+    "NAT AERONAUTICS AND SPACE ADMINISTRATION": "National Aeronautics and Space Administration",
+    "NAT ARCHIVES AND RECORDS ADMINISTRATION": "National Archives and Records Administration",
+    "U.S. AGENCY FOR INTERNATIONAL DEV": "U.S. Agency for International Development",
+    "U.S.AGENCY FOR GLOBAL MEDIA": "U.S. Agency for Global Media",
+  };
+  const title = s => FULL[s] || s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
     .replace(/\b(Of|And|For|The|On)\b/g, w => w.toLowerCase()).replace(/^./, c => c.toUpperCase())
     .replace(/\bU\.s\./i, "U.S.");
   const fyLabel = fy => `FY${fy}`;

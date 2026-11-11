@@ -50,6 +50,28 @@
    "baseline": 1861.5
   }
  ],
+ "army_headcount": [
+  {
+   "fiscal_year": 2025,
+   "start_headcount": 171657,
+   "end_headcount": 165580
+  },
+  {
+   "fiscal_year": 2025,
+   "start_headcount": 221222,
+   "end_headcount": 212550
+  },
+  {
+   "fiscal_year": 2026,
+   "start_headcount": 165580,
+   "end_headcount": 150492
+  },
+  {
+   "fiscal_year": 2026,
+   "start_headcount": 212550,
+   "end_headcount": 180217
+  }
+ ],
  "army_airforce_headcount_202609": [
   {
    "agency_code": "AF",

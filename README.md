@@ -6,7 +6,7 @@ Which federal agencies and job types lose people fastest, and how much of that i
 
 ## Summary
 
-I pulled every OPM separations file from Jul 2011 to Sep 2026 (183 monthly files, about 3.8 million rows) and a September headcount snapshot for each year, then built yearly quit rates per 100 employees by agency and by occupational group. A coverage check compares each agency's monthly report with its own previous year. In the Sep 2026 file the Army reports 9 separations against a usual month of about 1,860, while still employing 180,217 people. Seventeen agency-months since Jul 2011 fail the check, and the years they belong to are listed instead of ranked. On the raw numbers, Commerce, Interior and Agriculture lead the quit ranking nearly every year. Among permanent staff on regular schedules, the agencies that lead every year are Veterans Affairs and the Army.
+I pulled every OPM separations file from Jul 2011 to Sep 2026 (183 monthly files, about 3.8 million rows) and a September headcount snapshot for each year, then built yearly quit rates per 100 employees by agency and by occupational group. A coverage check compares each agency's monthly report with its own previous year. In the Sep 2026 file the Army reports 9 separations against a usual month of about 1,860, a year after its September 2025 headcount of 212,550. Seventeen agency-months since Jul 2011 fail the check, and the years they belong to are listed instead of ranked. On the raw numbers, Commerce, Interior and Agriculture are in the top five for quit rate nearly every year. Among permanent staff on regular schedules, they never are, and Veterans Affairs and the Army are in the top five every year.
 
 ## Problem
 
@@ -27,11 +27,11 @@ A ranking that ignores these points a planner at the wrong agencies.
 | OPM Federal Workforce Data, employment | One row per employee on the rolls at a snapshot. I use the 16 September snapshots, 2011 to 2026, about 2 million rows each | Same API |
 | BLS Job Openings and Labor Turnover Survey | Monthly quits rate for Federal, State and local, Total nonfarm and three private industries, 2011 to 2026 | BLS public API |
 
-OPM's data covers most executive branch civilian employees. By design it leaves out the Postal Service, the intelligence agencies, Census Bureau temporary workers, the State Department's foreign service and about 15 other groups.
+OPM's data covers most executive branch civilian employees. By design it leaves out the Postal Service, the intelligence agencies, Census Bureau temporary workers, the State Department's foreign service and about 10 other groups.
 
 ## Discovery
 
-**Missing data looks like retention.** The Army reported 2,430 separations in the Sep 2024 file and 9 in the Sep 2026 file. The Air Force went from 2,220 to 26. Both still had over 150,000 people on the September 2026 rolls. OPM's site says a change in Department of War data processing is affecting some components' September 2026 data. My check also flags August 2026 for the Army, the Air Force and the Defense Department's own offices.
+**Missing data looks like retention.** The Army reported 2,430 separations in the Sep 2024 file and 9 in the Sep 2026 file. The Air Force went from 2,220 to 26. A year earlier, in September 2025, the Army had 212,550 people on the rolls. OPM's site says a change in Department of War data processing is affecting some components' September 2026 data, both separations and headcount, so the September 2026 headcount can't be trusted for these agencies either. My check also flags August 2026 for the Army, the Air Force and the Defense Department's own offices.
 
 **Not every low month is a gap.** The Agency for International Development reports very few separations in FY2026 because very few people are left (4,800 employees in Sep 2024, 1,101 in Sep 2025, 230 in Sep 2026). The check skips agencies whose headcount fell by more than half in the year. Seasonal agencies have low months every winter, so a month only fails if it is also far below the same month a year earlier.
 
@@ -39,7 +39,7 @@ OPM's data covers most executive branch civilian employees. By design it leaves 
 
 **2025 is two stories.** The quit rate across the agencies I could rank went from 3.57 per 100 in FY2024 to 7.04 in FY2025. Leaving out quits OPM flags as part of the Deferred Resignation Program, FY2025 is 4.2.
 
-**Dead end:** I tried to match late records against earlier files to rule out double counting. The files have no person ID, and identical rows also occur between different people inside one file, so an exact match proves nothing. I count every row and say so (DECISIONS.md, entry 4).
+**Open question:** the files have no person ID, so I can't match a late record to an earlier file for certain. In the one pair I tested, 290 of the 1,991 late rows in the Sep 2026 file are identical to a row in the Aug 2026 file. Identical rows inside the Aug 2026 file itself run at about 2%, so 15% is high, and some late records are probably counted twice in the newest months. In Jun 2024 the overlap was 0 of 85. I count every row and mark FY2026 provisional (DECISIONS.md, entry 4).
 
 ## Execution
 
@@ -58,15 +58,15 @@ Options I turned down, and what each choice cost, are in [DECISIONS.md](DECISION
 
 ## Results
 
-**Among permanent staff, the same agencies lead every year.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 complete years from FY2012 to FY2024. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. On the raw rate, Commerce is in the top five in all 13 years, Interior in 12 and Agriculture in 11. None of the three reaches the top five for permanent staff in any of those years.
+**Among permanent staff, the same agencies stay near the top.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 complete years from FY2012 to FY2024. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. On the raw rate, Commerce is in the top five in all 13 years, Interior in 12 and Agriculture in 11. None of the three reaches the top five for permanent staff in any of those years.
 
-**By job type, the spread is wide.** In FY2024, permanent staff in general services and support work quit at 7.44 per 100, and in food preparation and serving at 5.84. At the low end, equipment, facilities and services was 1.56 and information technology, the largest group at about 98,000 people, was 1.62.
+**By job type, the spread is wide.** Among occupational groups with at least 10,000 employees in FY2024, permanent staff in general services and support work quit at 7.44 per 100, and in food preparation and serving at 5.84. At the low end, equipment, facilities and services was 1.56 and information technology, with about 98,000 people, was 1.62.
 
 **Federal quitting is low next to the rest of the economy.** In FY2024, OPM's covered agencies show 3.57 quits per 100 (2.80 for permanent staff) and BLS shows 6.4 for federal jobs, against 25.8 for all jobs. OPM's and BLS's federal rates rise and fall together (correlation 0.76, FY2012 to FY2024). They measure different groups, so I read the space between them as a range.
 
 What I'd tell a workforce planner:
 
-1. Check coverage before reading any agency's turnover. A month at a quarter of its usual level is a question for the data team before it is a retention result.
+1. Check coverage before reading any agency's turnover. When a month comes in at a quarter of its usual level, ask the data team about it first.
 2. Rank permanent staff separately. Seasonal and temporary turnover is a staffing-calendar question, and it hides where permanent employees leave.
 3. Read 2025 and 2026 with exit programs split out. Otherwise program exits look like a wave of people choosing to quit.
 

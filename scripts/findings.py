@@ -47,6 +47,9 @@ f["gap_agencies"] = one("select count(distinct agency_code) from coverage_gaps")
 f["army_airforce"] = rows("""
     select agency_code, file_month, separations, baseline from agency_month
     where agency_code in ('AR', 'AF') and file_month in ('202409', '202608', '202609') order by 1, 2""")
+f["army_headcount"] = rows("""
+    select fiscal_year, start_headcount, end_headcount from agency_year
+    where agency_code in ('AR', 'AF') and fiscal_year >= 2025 order by 1""")
 f["army_airforce_headcount_202609"] = rows("""
     select agency_code, end_headcount from agency_year
     where agency_code in ('AR', 'AF') and fiscal_year = 2026 order by 1""")
