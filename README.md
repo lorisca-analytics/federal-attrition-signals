@@ -4,6 +4,8 @@ Which federal agencies and job types lose people fastest, and how much of that i
 
 ![Dashboard: separations reported each month and the agency ranking](docs/dashboard-light.png)
 
+[Open the live dashboard](https://lorisca-analytics.github.io/federal-attrition-signals/)
+
 ## Summary
 
 I pulled every OPM separations file from Jul 2011 to Sep 2026 (183 monthly files, about 3.8 million rows) and a September headcount snapshot for each year, then built yearly quit rates per 100 employees by agency and by occupational group. A coverage check compares each agency's monthly report with its own previous year. In the Sep 2026 file the Army reports 9 separations against a usual month of about 1,860, a year after its September 2025 headcount of 212,550. Seventeen agency-months since Jul 2011 fail the check, and the years they belong to are listed instead of ranked. On the raw numbers, Commerce, Interior and Agriculture are in the top five for quit rate nearly every year. Among permanent staff on regular schedules, they never are, and Veterans Affairs and the Army are in the top five every year from FY2012 to FY2024. Splitting by length of service shows two different patterns: Veterans Affairs carries more people in their first years, and the Army loses more people at every stage from the second year on.

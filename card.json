@@ -2,7 +2,7 @@
   "id": "federal-attrition-signals",
   "repo": "lorisca-analytics/federal-attrition-signals",
   "title": "Who leaves federal agencies first",
-  "status": "draft",
+  "status": "live",
   "group": "work",
   "year": "2026",
   "hook": "OPM's raw files showed the Army reporting 9 departures in September 2026, against a usual month of about 1,860. OPM flags Department of War data for that month as affected by a processing change. I check coverage and split out seasonal jobs before ranking anything, then show which agencies lose permanent staff year after year.",
@@ -40,6 +40,11 @@
       "label": "Repo",
       "url": "https://github.com/lorisca-analytics/federal-attrition-signals",
       "kind": "github"
+    },
+    {
+      "label": "Dashboard",
+      "url": "https://lorisca-analytics.github.io/federal-attrition-signals/",
+      "kind": "demo"
     }
   ],
   "visual": "https://raw.githubusercontent.com/lorisca-analytics/federal-attrition-signals/main/docs/dashboard-light.png",
