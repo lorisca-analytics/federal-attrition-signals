@@ -1,0 +1,63 @@
+fiscal_year,segment,separations,rate,provisional
+2012,Quit,69128,3.46,false
+2012,Reduction in force,896,0.04,false
+2012,Retirement or early out,64539,3.23,false
+2012,"Transfer, termination or other",82531,4.13,false
+2013,Quit,73698,3.55,false
+2013,Reduction in force,562,0.03,false
+2013,Retirement or early out,64845,3.12,false
+2013,"Transfer, termination or other",88158,4.25,false
+2014,Quit,72464,3.55,false
+2014,Reduction in force,689,0.03,false
+2014,Retirement or early out,68323,3.34,false
+2014,"Transfer, termination or other",81378,3.98,false
+2015,Quit,72374,3.56,false
+2015,Reduction in force,401,0.02,false
+2015,Retirement or early out,64650,3.18,false
+2015,"Transfer, termination or other",90223,4.44,false
+2016,Quit,75789,3.68,false
+2016,Reduction in force,202,0.01,false
+2016,Retirement or early out,63458,3.08,false
+2016,"Transfer, termination or other",91934,4.47,false
+2017,Quit,78409,3.77,false
+2017,Reduction in force,135,0.01,false
+2017,Retirement or early out,61990,2.98,false
+2017,"Transfer, termination or other",85267,4.1,false
+2018,Quit,79345,3.81,false
+2018,Reduction in force,262,0.01,false
+2018,Retirement or early out,65784,3.16,false
+2018,"Transfer, termination or other",87373,4.2,false
+2019,Quit,83831,3.99,false
+2019,Reduction in force,173,0.01,false
+2019,Retirement or early out,65995,3.14,false
+2019,"Transfer, termination or other",90468,4.3,false
+2020,Quit,73208,3.42,false
+2020,Reduction in force,57,0.0,false
+2020,Retirement or early out,61877,2.89,false
+2020,"Transfer, termination or other",85478,3.99,false
+2021,Quit,93700,4.31,false
+2021,Reduction in force,195,0.01,false
+2021,Retirement or early out,66011,3.04,false
+2021,"Transfer, termination or other",88820,4.09,false
+2022,Quit,98517,5.03,false
+2022,Reduction in force,40,0.0,false
+2022,Retirement or early out,66720,3.41,false
+2022,"Transfer, termination or other",74076,3.79,false
+2023,Quit,91674,4.16,false
+2023,Reduction in force,50,0.0,false
+2023,Retirement or early out,57872,2.63,false
+2023,"Transfer, termination or other",88817,4.03,false
+2024,Quit,81190,3.57,false
+2024,Reduction in force,33,0.0,false
+2024,Retirement or early out,59020,2.6,false
+2024,"Transfer, termination or other",80583,3.55,false
+2025,DRP-flagged exit,109003,4.87,false
+2025,Quit,93945,4.2,false
+2025,Reduction in force,10272,0.46,false
+2025,Retirement or early out,82586,3.69,false
+2025,"Transfer, termination or other",69360,3.1,false
+2026,DRP-flagged exit,20157,1.8,true
+2026,Quit,39204,3.5,true
+2026,Reduction in force,282,0.03,true
+2026,Retirement or early out,30116,2.69,true
+2026,"Transfer, termination or other",28591,2.55,true

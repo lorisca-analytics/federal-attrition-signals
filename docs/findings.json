@@ -1,0 +1,184 @@
+{
+ "window": {
+  "first_fy": 2012,
+  "last_fy": 2026
+ },
+ "separations_files": 183,
+ "headcount_snapshots": 16,
+ "separation_rows_total": 3765478,
+ "gap_months_total": 29,
+ "gap_agencies": 14,
+ "army_airforce": [
+  {
+   "agency_code": "AF",
+   "file_month": "202409",
+   "separations": 2220,
+   "baseline": 1753.0
+  },
+  {
+   "agency_code": "AF",
+   "file_month": "202608",
+   "separations": 270,
+   "baseline": 1299.0
+  },
+  {
+   "agency_code": "AF",
+   "file_month": "202609",
+   "separations": 26,
+   "baseline": 1299.0
+  },
+  {
+   "agency_code": "AR",
+   "file_month": "202409",
+   "separations": 2430,
+   "baseline": 2022.0
+  },
+  {
+   "agency_code": "AR",
+   "file_month": "202608",
+   "separations": 40,
+   "baseline": 1861.5
+  },
+  {
+   "agency_code": "AR",
+   "file_month": "202609",
+   "separations": 9,
+   "baseline": 1861.5
+  }
+ ],
+ "army_airforce_headcount_202609": [
+  {
+   "agency_code": "AF",
+   "end_headcount": 150492
+  },
+  {
+   "agency_code": "AR",
+   "end_headcount": 180217
+  }
+ ],
+ "gov_quit_rate": [
+  {
+   "fiscal_year": 2019,
+   "quit_rate": 3.99
+  },
+  {
+   "fiscal_year": 2022,
+   "quit_rate": 5.03
+  },
+  {
+   "fiscal_year": 2024,
+   "quit_rate": 3.57
+  },
+  {
+   "fiscal_year": 2025,
+   "quit_rate": 7.04
+  }
+ ],
+ "gov_quit_rate_without_drp_2025": 4.2,
+ "drp_exit_rate_2025": 4.87,
+ "drp_exits_2025": 109003,
+ "drp_quits_2025": 63512,
+ "top5_streaks_fy2012_2024": [
+  {
+   "agency": "DEPARTMENT OF COMMERCE",
+   "years_in_top5": 12,
+   "years_ranked": 12
+  },
+  {
+   "agency": "DEPARTMENT OF INTERIOR",
+   "years_in_top5": 11,
+   "years_ranked": 12
+  },
+  {
+   "agency": "DEPARTMENT OF AGRICULTURE",
+   "years_in_top5": 10,
+   "years_ranked": 11
+  },
+  {
+   "agency": "DEPARTMENT OF DEFENSE",
+   "years_in_top5": 10,
+   "years_ranked": 13
+  }
+ ],
+ "agencies_ranked_fy2024": 23,
+ "occupation_fy2024_high_low": [
+  {
+   "occupational_group": "GENERAL SERVICES AND SUPPORT WORK FAMILY",
+   "avg_headcount": 15835,
+   "quit_rate": 9.56
+  },
+  {
+   "occupational_group": "WAREHOUSING AND STOCK HANDLING FAMILY",
+   "avg_headcount": 14779,
+   "quit_rate": 6.54
+  },
+  {
+   "occupational_group": "FOOD PREPARATION AND SERVING FAMILY",
+   "avg_headcount": 11207,
+   "quit_rate": 6.31
+  },
+  {
+   "occupational_group": "QUALITY ASSURANCE, INSPECTION, AND GRADING GROUP",
+   "avg_headcount": 12278,
+   "quit_rate": 1.73
+  },
+  {
+   "occupational_group": "EQUIPMENT, FACILITIES, AND SERVICES GROUP",
+   "avg_headcount": 17872,
+   "quit_rate": 1.74
+  },
+  {
+   "occupational_group": "INFORMATION TECHNOLOGY GROUP",
+   "avg_headcount": 98478,
+   "quit_rate": 1.96
+  }
+ ],
+ "benchmark_fy2024": [
+  {
+   "series": "Federal civilian (OPM, covered agencies)",
+   "quit_rate": 3.57
+  },
+  {
+   "series": "Federal (BLS)",
+   "quit_rate": 6.4
+  },
+  {
+   "series": "State and local (BLS)",
+   "quit_rate": 10.5
+  },
+  {
+   "series": "Total nonfarm (BLS)",
+   "quit_rate": 25.8
+  },
+  {
+   "series": "Health care and social assistance (BLS)",
+   "quit_rate": 27.1
+  },
+  {
+   "series": "Retail trade (BLS)",
+   "quit_rate": 34.5
+  },
+  {
+   "series": "Leisure and hospitality (BLS)",
+   "quit_rate": 49.5
+  }
+ ],
+ "usaid_headcount": [
+  {
+   "fiscal_year": 2024,
+   "start_headcount": 4599,
+   "end_headcount": 4800,
+   "separations": 392,
+   "separation_rate": 8.34
+  },
+  {
+   "fiscal_year": 2025,
+   "start_headcount": 4800,
+   "end_headcount": 1101,
+   "separations": 4803,
+   "separation_rate": 162.79
+  }
+ ],
+ "usaid_headcount_202609": 230,
+ "late_share_202609": 0.206
+}

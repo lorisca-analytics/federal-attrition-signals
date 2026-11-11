@@ -1,0 +1,108 @@
+fiscal_year,series,quit_rate,provisional
+2012,Federal (BLS),4.0,false
+2012,"Federal civilian (OPM, covered agencies)",3.46,false
+2012,Health care and social assistance (BLS),16.5,false
+2012,Leisure and hospitality (BLS),35.9,false
+2012,Retail trade (BLS),26.5,false
+2012,State and local (BLS),7.5,false
+2012,Total nonfarm (BLS),18.4,false
+2013,Federal (BLS),4.6,false
+2013,"Federal civilian (OPM, covered agencies)",3.55,false
+2013,Health care and social assistance (BLS),17.7,false
+2013,Leisure and hospitality (BLS),37.5,false
+2013,Retail trade (BLS),28.2,false
+2013,State and local (BLS),7.5,false
+2013,Total nonfarm (BLS),19.5,false
+2014,Federal (BLS),4.3,false
+2014,"Federal civilian (OPM, covered agencies)",3.55,false
+2014,Health care and social assistance (BLS),18.5,false
+2014,Leisure and hospitality (BLS),41.3,false
+2014,Retail trade (BLS),32.4,false
+2014,State and local (BLS),8.2,false
+2014,Total nonfarm (BLS),21.5,false
+2015,Federal (BLS),5.1,false
+2015,"Federal civilian (OPM, covered agencies)",3.56,false
+2015,Health care and social assistance (BLS),20.8,false
+2015,Leisure and hospitality (BLS),46.2,false
+2015,Retail trade (BLS),34.4,false
+2015,State and local (BLS),8.7,false
+2015,Total nonfarm (BLS),23.1,false
+2016,Federal (BLS),5.3,false
+2016,"Federal civilian (OPM, covered agencies)",3.68,false
+2016,Health care and social assistance (BLS),21.5,false
+2016,Leisure and hospitality (BLS),49.7,false
+2016,Retail trade (BLS),35.8,false
+2016,State and local (BLS),9.7,false
+2016,Total nonfarm (BLS),24.8,false
+2017,Federal (BLS),5.8,false
+2017,"Federal civilian (OPM, covered agencies)",3.77,false
+2017,Health care and social assistance (BLS),22.1,false
+2017,Leisure and hospitality (BLS),49.0,false
+2017,Retail trade (BLS),35.6,false
+2017,State and local (BLS),9.5,false
+2017,Total nonfarm (BLS),25.6,false
+2018,Federal (BLS),6.4,false
+2018,"Federal civilian (OPM, covered agencies)",3.81,false
+2018,Health care and social assistance (BLS),23.1,false
+2018,Leisure and hospitality (BLS),51.1,false
+2018,Retail trade (BLS),36.5,false
+2018,State and local (BLS),10.0,false
+2018,Total nonfarm (BLS),26.8,false
+2019,Federal (BLS),7.0,false
+2019,"Federal civilian (OPM, covered agencies)",3.99,false
+2019,Health care and social assistance (BLS),24.6,false
+2019,Leisure and hospitality (BLS),54.8,false
+2019,Retail trade (BLS),39.8,false
+2019,State and local (BLS),10.6,false
+2019,Total nonfarm (BLS),27.8,false
+2020,Federal (BLS),7.7,false
+2020,"Federal civilian (OPM, covered agencies)",3.42,false
+2020,Health care and social assistance (BLS),24.2,false
+2020,Leisure and hospitality (BLS),48.1,false
+2020,Retail trade (BLS),37.2,false
+2020,State and local (BLS),11.0,false
+2020,Total nonfarm (BLS),25.0,false
+2021,Federal (BLS),8.7,false
+2021,"Federal civilian (OPM, covered agencies)",4.31,false
+2021,Health care and social assistance (BLS),28.5,false
+2021,Leisure and hospitality (BLS),63.1,false
+2021,Retail trade (BLS),48.0,false
+2021,State and local (BLS),10.5,false
+2021,Total nonfarm (BLS),30.7,false
+2022,Federal (BLS),9.4,false
+2022,"Federal civilian (OPM, covered agencies)",5.03,false
+2022,Health care and social assistance (BLS),31.5,false
+2022,Leisure and hospitality (BLS),66.1,false
+2022,Retail trade (BLS),49.0,false
+2022,State and local (BLS),13.1,false
+2022,Total nonfarm (BLS),33.9,false
+2023,Federal (BLS),7.4,false
+2023,"Federal civilian (OPM, covered agencies)",4.16,false
+2023,Health care and social assistance (BLS),30.0,false
+2023,Leisure and hospitality (BLS),60.0,false
+2023,Retail trade (BLS),42.2,false
+2023,State and local (BLS),11.3,false
+2023,Total nonfarm (BLS),29.5,false
+2024,Federal (BLS),6.4,false
+2024,"Federal civilian (OPM, covered agencies)",3.57,false
+2024,Health care and social assistance (BLS),27.1,false
+2024,Leisure and hospitality (BLS),49.5,false
+2024,Retail trade (BLS),34.5,false
+2024,State and local (BLS),10.5,false
+2024,Total nonfarm (BLS),25.8,false
+2025,Federal (BLS),8.5,false
+2025,"Federal civilian (OPM), quits without DRP",4.2,false
+2025,"Federal civilian (OPM, covered agencies)",7.04,false
+2025,Health care and social assistance (BLS),24.5,false
+2025,Leisure and hospitality (BLS),46.2,false
+2025,Retail trade (BLS),29.9,false
+2025,State and local (BLS),9.9,false
+2025,Total nonfarm (BLS),24.1,false
+2026,Federal (BLS),7.9,true
+2026,"Federal civilian (OPM), quits without DRP",3.5,true
+2026,"Federal civilian (OPM, covered agencies)",3.8,true
+2026,Health care and social assistance (BLS),22.9,true
+2026,Leisure and hospitality (BLS),46.6,true
+2026,Retail trade (BLS),35.1,true
+2026,State and local (BLS),9.6,true
+2026,Total nonfarm (BLS),23.6,true

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who leaves federal agencies first</title>
+<meta name="description" content="Federal quit rates by agency and job type, FY2012 to FY2026, with a coverage check that keeps missing data from looking like retention.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="label">Federal workforce · FY2012 to FY2026</p>
+    <h1>Who leaves federal agencies <em>first</em></h1>
+    <p class="lede">Quit rates by agency and job type from OPM's public workforce files. Every month an agency's data looks incomplete is held out of the ranking, so missing data never reads as people staying.</p>
+    <p class="meta" id="meta"></p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <p class="label">Check first</p>
+    <h2>Separations reported each month</h2>
+    <p class="note">A sudden drop to almost nothing, while headcount stays the same, is a reporting gap. Months that fail the check are marked and their year is left out of every ranking below.</p>
+    <div class="controls"><label>Agency <select id="agencySel"></select></label></div>
+    <figure>
+      <div class="chart" id="chartMonthly"></div>
+      <figcaption id="capMonthly"></figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="label">Ranking</p>
+    <h2>Quits per 100 employees, by agency</h2>
+    <div class="controls">
+      <label>Fiscal year <select id="fySel"></select></label>
+      <label class="check"><input type="checkbox" id="drpToggle"> Leave out DRP-flagged quits</label>
+    </div>
+    <figure>
+      <div class="chart" id="chartRank"></div>
+      <figcaption id="capRank"></figcaption>
+    </figure>
+    <div id="notRanked" class="aside"></div>
+  </section>
+
+  <section>
+    <p class="label">Why people left</p>
+    <h2>Separations per 100 employees, by reason</h2>
+    <figure>
+      <div class="legend" id="legendReason"></div>
+      <div class="chart" id="chartReason"></div>
+      <figcaption>Covered agencies only. DRP-flagged exits are separations OPM marks as part of the 2025 Deferred Resignation Program, whatever their category. FY2026 is provisional.</figcaption>
+    </figure>
+    <details><summary>Show as a table</summary><div id="tableReason" class="tablewrap"></div></details>
+  </section>
+
+  <section>
+    <p class="label">Outside view</p>
+    <h2>Federal quitting next to the rest of the economy</h2>
+    <figure>
+      <div class="legend" id="legendBench"></div>
+      <div class="chart" id="chartBench"></div>
+      <figcaption>Yearly quit rate per 100 employees. BLS rates are monthly rates added over the twelve months of each fiscal year. BLS "Federal" and OPM cover different groups of employees (OPM leaves out the Postal Service and the intelligence agencies, for example), so read the gap between them as a range, not an error.</figcaption>
+    </figure>
+    <details><summary>Show as a table</summary><div id="tableBench" class="tablewrap"></div></details>
+  </section>
+
+  <section>
+    <p class="label">Job types</p>
+    <h2>Quits per 100 employees, by occupational group</h2>
+    <div class="controls">
+      <label>Fiscal year <select id="fySelOcc"></select></label>
+      <label class="check"><input type="checkbox" id="drpToggleOcc"> Leave out DRP-flagged quits</label>
+    </div>
+    <figure>
+      <div class="chart" id="chartOcc"></div>
+      <figcaption>Groups with at least 10,000 employees. Covered agencies only.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="label">Held out</p>
+    <h2>Every month that failed the coverage check</h2>
+    <div id="tableGaps" class="tablewrap"></div>
+  </section>
+
+  <footer>
+    <p>Data: OPM Federal Workforce Data (separations and September headcount files) and BLS Job Openings and Labor Turnover Survey. Built from <a href="data/">the CSV files in this folder</a>.</p>
+  </footer>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+<script src="charts.js?v=3"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>

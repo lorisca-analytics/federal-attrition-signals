@@ -1,0 +1,101 @@
+{
+  "contract": "federal-attrition-signals clean tables",
+  "version": "1.0.0",
+  "rules": [
+    "Columns are never renamed or removed within a major version. New columns may be added at the end.",
+    "Every table that carries a rate also carries the flags that say whether the rate can be trusted.",
+    "drp_ columns count separations OPM flags with drp_indicator = Y (Deferred Resignation Program). They are a subset of the reasons, never added to them.",
+    "A rate is per 100 employees, using the average of the September headcount before and at the end of the fiscal year. A separation rate can pass 100 when an agency shrinks to almost nothing within the year, so start and end headcount are carried with it."
+  ],
+  "tables": {
+    "agency_year": {
+      "key": ["fiscal_year", "agency_code"],
+      "columns": {
+        "fiscal_year": {"type": "int", "min": 2012},
+        "agency_code": {"type": "str", "pattern": "^[A-Z0-9]{2}$"},
+        "agency": {"type": "str"},
+        "start_headcount": {"type": "int", "min": 0},
+        "end_headcount": {"type": "int", "min": 0},
+        "avg_headcount": {"type": "int", "min": 1},
+        "separations": {"type": "int", "min": 0},
+        "quits": {"type": "int", "min": 0},
+        "retirements": {"type": "int", "min": 0},
+        "early_outs": {"type": "int", "min": 0},
+        "reductions_in_force": {"type": "int", "min": 0},
+        "transfers": {"type": "int", "min": 0},
+        "terminations_or_expired": {"type": "int", "min": 0},
+        "other": {"type": "int", "min": 0},
+        "drp_separations": {"type": "int", "min": 0},
+        "drp_quits": {"type": "int", "min": 0},
+        "quit_rate": {"type": "float", "min": 0, "max": 100},
+        "quit_rate_excl_drp": {"type": "float", "min": 0, "max": 100},
+        "separation_rate": {"type": "float", "min": 0, "max": 1000},
+        "incomplete": {"type": "bool"},
+        "gap_months": {"type": "int", "min": 0, "max": 12},
+        "provisional": {"type": "bool"}
+      },
+      "checks": ["parts_add_up", "rate_needs_flags"]
+    },
+    "occupation_year": {
+      "key": ["fiscal_year", "occupational_group"],
+      "columns": {
+        "fiscal_year": {"type": "int", "min": 2012},
+        "occupational_group": {"type": "str"},
+        "avg_headcount": {"type": "int", "min": 1},
+        "separations": {"type": "int", "min": 0},
+        "quits": {"type": "int", "min": 0},
+        "drp_quits": {"type": "int", "min": 0},
+        "quit_rate": {"type": "float", "min": 0, "max": 100},
+        "quit_rate_excl_drp": {"type": "float", "min": 0, "max": 100},
+        "separation_rate": {"type": "float", "min": 0, "max": 100},
+        "provisional": {"type": "bool"}
+      },
+      "checks": ["rate_needs_flags"]
+    },
+    "benchmark_year": {
+      "key": ["fiscal_year", "series"],
+      "columns": {
+        "fiscal_year": {"type": "int", "min": 2012},
+        "series": {"type": "str"},
+        "quit_rate": {"type": "float", "min": 0, "max": 100},
+        "provisional": {"type": "bool"}
+      },
+      "checks": ["rate_needs_flags"]
+    },
+    "reason_year": {
+      "key": ["fiscal_year", "segment"],
+      "columns": {
+        "fiscal_year": {"type": "int", "min": 2012},
+        "segment": {"type": "str", "pattern": "^(Quit|Retirement or early out|DRP-flagged exit|Reduction in force|Transfer, termination or other)$"},
+        "separations": {"type": "int", "min": 0},
+        "rate": {"type": "float", "min": 0, "max": 100},
+        "provisional": {"type": "bool"}
+      },
+      "checks": ["rate_needs_flags"]
+    },
+    "agency_month": {
+      "key": ["agency_code", "file_month"],
+      "columns": {
+        "agency_code": {"type": "str", "pattern": "^[A-Z0-9]{2}$"},
+        "agency": {"type": "str"},
+        "file_month": {"type": "str", "pattern": "^20[0-9]{2}(0[1-9]|1[0-2])$"},
+        "separations": {"type": "int", "min": 0},
+        "baseline": {"type": "float", "min": 0, "nullable": true},
+        "is_gap": {"type": "bool"}
+      },
+      "checks": []
+    },
+    "coverage_gaps": {
+      "key": ["agency_code", "file_month"],
+      "columns": {
+        "agency_code": {"type": "str", "pattern": "^[A-Z0-9]{2}$"},
+        "agency": {"type": "str"},
+        "file_month": {"type": "str", "pattern": "^20[0-9]{2}(0[1-9]|1[0-2])$"},
+        "fiscal_year": {"type": "int", "min": 2012},
+        "separations": {"type": "int", "min": 0},
+        "baseline": {"type": "float", "min": 0}
+      },
+      "checks": []
+    }
+  }
+}

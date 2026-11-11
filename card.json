@@ -1,0 +1,41 @@
+{
+  "id": "federal-attrition-signals",
+  "repo": "lorisca-analytics/federal-attrition-signals",
+  "title": "Who leaves federal agencies first",
+  "status": "draft",
+  "group": "work",
+  "year": "2026",
+  "hook": "The raw files said the Army had almost stopped losing people. It had stopped sending complete data. I checked coverage before ranking anything, then found which agencies and job types lose people year after year.",
+  "metric": "Army: 9 separations reported in a month, 180,217 still employed",
+  "trace": {
+    "problem": "Missing data looks like retention",
+    "move": "Coverage check before any ranking",
+    "result": "Same few departments lead quits every year"
+  },
+  "cardVisual": {
+    "kind": "bars",
+    "label": "Army separations in OPM's September file",
+    "aLabel": "Sep 2024",
+    "aValue": 2430,
+    "aText": "2,430",
+    "bLabel": "Sep 2026",
+    "bValue": 9,
+    "bText": "9"
+  },
+  "body": {
+    "problem": "Federal turnover numbers mislead in three ways. An agency that sends incomplete data looks like it kept everyone. People who left in one month show up in later files. And in 2025, exit-program departures were mostly coded as resignations, so they read like a wave of quits.",
+    "approach": "I pulled 15 years of OPM separation files and September headcounts through OPM's open API, with a pull that can stop and resume and tracks every file version. A coverage check compares each agency's monthly report with its own recent months and holds failing years out of the ranking. Rates are counted by the month a person left, with exit-program departures split out.",
+    "hers": "Solo project on public data. I designed the question, the checks and the data contract, and built the pull, the SQL tables and the dashboard.",
+    "result": "Twenty-nine agency-months since 2011 fail the check, including the Army and Air Force in Aug and Sep 2026. Among large agencies, Commerce is in the top five for quit rate in all 12 complete years from FY2012 to FY2024. Without exit-program departures, FY2025's quit rate is 4.2 per 100, not 7.04."
+  },
+  "tools": ["Python", "SQL", "DuckDB", "OPM API", "BLS API", "pytest"],
+  "links": [
+    { "label": "Repo", "url": "https://github.com/lorisca-analytics/federal-attrition-signals", "kind": "github" }
+  ],
+  "visual": "https://raw.githubusercontent.com/lorisca-analytics/federal-attrition-signals/main/docs/dashboard-light.png",
+  "visualAlt": "Dashboard showing Army separations reported each month, with the two failing months ringed, and the agency quit ranking",
+  "reviewNotes": {
+    "notes": ["Run started under backlog id playbook-people-analytics, renamed by Lori to federal-attrition-signals on Nov 10."],
+    "missing": ["Repo owner (lorisca-analytics assumed, Lori to confirm at gate B)", "Lane: Talent Systems per backlog, Lori to confirm"]
+  }
+}
