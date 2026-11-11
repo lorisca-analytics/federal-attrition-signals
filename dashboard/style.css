@@ -33,7 +33,8 @@ h1, h2 { font-family: Archivo, -apple-system, BlinkMacSystemFont, "Segoe UI", Ro
 h1 { font-size: clamp(1.9rem, 4.2vw, 3.1rem); font-weight: 800; margin: 0.4rem 0 0.8rem; }
 h1 em { font-style: normal; color: var(--cobalt); }
 h2 { font-size: 1.45rem; font-weight: 700; margin: 0.3rem 0 0.6rem; }
-.lede { color: var(--steel); font-size: 1.12rem; line-height: 1.7; max-width: 62ch; margin: 0; }
+.lede { color: var(--steel); font-size: 1.12rem; line-height: 1.7; max-width: 56ch; margin: 0; }
+p, figcaption, li { text-wrap: pretty; }
 .meta { color: var(--steel); font-size: 0.9rem; margin: 1rem 0 0; }
 .label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--steel); margin: 0; }
 .label::before { content: ""; display: inline-block; width: 18px; height: 3px; background: var(--ink); vertical-align: middle; margin-right: 0.6rem; }
