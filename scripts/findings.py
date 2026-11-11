@@ -89,6 +89,9 @@ f["raw_leaders_core_top5_years"] = rows("""
         from agency_year where not incomplete and fiscal_year <= 2024 and avg_headcount >= 5000)
     select agency, count(*) filter (where rk <= 5) as years_in_top5_permanent from r
     where agency_code in ('CM', 'IN', 'AG') group by agency order by agency""")
+f["core_rate_fy2024_va_army"] = rows("""
+    select agency_code, core_quit_rate from agency_year
+    where fiscal_year = 2024 and agency_code in ('VA', 'AR') order by 1""")
 f["core_share_fy2024"] = rows("""
     select round(100.0 * sum(core_quits) / sum(quits), 1) as core_share_of_quits,
            round(100.0 * sum(core_avg_headcount) / sum(avg_headcount), 1) as core_share_of_headcount

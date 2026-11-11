@@ -168,6 +168,16 @@
    "years_in_top5_permanent": 0
   }
  ],
+ "core_rate_fy2024_va_army": [
+  {
+   "agency_code": "AR",
+   "core_quit_rate": 2.98
+  },
+  {
+   "agency_code": "VA",
+   "core_quit_rate": 3.5
+  }
+ ],
  "core_share_fy2024": {
   "core_share_of_quits": 71.9,
   "core_share_of_headcount": 91.8

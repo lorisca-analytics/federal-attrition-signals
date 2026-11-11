@@ -17,7 +17,7 @@ How each finding in the README can be checked, and why each call was made.
 | Seasonal and temporary jobs about 8% of headcount, 28% of quits (FY2024) | `core_share_fy2024` |
 | Commerce 768 of 2,384 quits, 4.89 falling to 1.85 | `commerce_fy2024` |
 | Quit rate 3.57 (FY2024), 7.04 (FY2025), 4.2 without exit-program quits, 2.80 permanent staff | `gov_quit_rate`, `gov_quit_rate_without_drp_2025`, `gov_core_quit_rate` |
-| VA and Army 13 of 13, Defense offices 12, Homeland Security 11 (permanent staff) | `top5_streaks_core_fy2012_2024` |
+| VA and Army 13 of 13, Defense offices 12, Homeland Security 11 (permanent staff), FY2024 rates 3.50 and 2.98 | `top5_streaks_core_fy2012_2024`, `core_rate_fy2024_va_army`, `gov_core_quit_rate` |
 | Commerce 13 of 13, Interior 12, Agriculture 11 (all staff), none in the permanent-staff top five | `top5_streaks_fy2012_2024`, `raw_leaders_core_top5_years` |
 | General services 7.44, food preparation 5.84, equipment 1.56, information technology 1.62 | `occupation_core_fy2024_high_low` |
 | OPM 3.57, BLS federal 6.4, all jobs 25.8 (FY2024), correlation 0.76 | `benchmark_fy2024`, `opm_bls_federal_correlation_fy2012_2024` |
