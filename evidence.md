@@ -20,6 +20,7 @@ How each finding in the README can be checked, and why each call was made.
 | VA and Army 13 of 13, Defense offices 12, Homeland Security 11 (permanent staff), same at 10,000 and 20,000 floors, FY2024 rates 3.50 and 2.98 | `top5_streaks_core_fy2012_2024`, `core_top5_by_size_floor`, `core_rate_fy2024_va_army`, `gov_core_quit_rate` |
 | Commerce 13 of 13, Interior 12, Agriculture 11 (all staff), none in the permanent-staff top five | `top5_streaks_fy2012_2024`, `raw_leaders_core_top5_years` |
 | Length-of-service table, 47.5% of quits in the first three years, VA 23.3% and Army 15.6% of staff in the first three years, VA 55.7% of quits | `service_rates_fy2012_2024`, `service_early_share_fy2012_2024` |
+| FY2025 top five with 66% to 86% of quits DRP-flagged, VA 14th, Army 16th | `fy2025_core_top5_and_drp_share` |
 | General services 7.44, food preparation 5.84, equipment 1.56, information technology 1.62 | `occupation_core_fy2024_high_low` |
 | OPM 3.57, BLS federal 6.4, all jobs 25.8 (FY2024), correlation 0.76 | `benchmark_fy2024`, `opm_bls_federal_correlation_fy2012_2024` |
 | Agency for International Development headcount 4,800, 1,101, 230 | `usaid_headcount`, `usaid_headcount_202609` |

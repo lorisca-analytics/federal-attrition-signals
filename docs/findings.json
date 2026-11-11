@@ -134,12 +134,12 @@
  ],
  "top5_streaks_core_fy2012_2024": [
   {
-   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+   "agency": "DEPARTMENT OF THE ARMY",
    "years_in_top5": 13,
    "years_ranked": 13
   },
   {
-   "agency": "DEPARTMENT OF THE ARMY",
+   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
    "years_in_top5": 13,
    "years_ranked": 13
   },
@@ -181,13 +181,13 @@
  "core_top5_by_size_floor": {
   "5000": [
    {
-    "agency": "DEPARTMENT OF THE ARMY",
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 24
    },
    {
-    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "agency": "DEPARTMENT OF THE ARMY",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 24
@@ -207,13 +207,13 @@
   ],
   "10000": [
    {
-    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+    "agency": "DEPARTMENT OF THE ARMY",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 20
    },
    {
-    "agency": "DEPARTMENT OF THE ARMY",
+    "agency": "DEPARTMENT OF VETERANS AFFAIRS",
     "years_in_top5": 13,
     "years_ranked": 13,
     "agencies_ranked": 20
@@ -365,6 +365,57 @@
    "agency_code": "VA",
    "headcount_share_under_3_years": 23.3,
    "quit_share_under_3_years": 55.7
+  }
+ ],
+ "fy2025_core_top5_and_drp_share": [
+  {
+   "agency_code": "GS",
+   "agency": "GENERAL SERVICES ADMINISTRATION",
+   "core_quit_rate": 14.88,
+   "drp_share_of_quits": 86.0,
+   "rk": 1
+  },
+  {
+   "agency_code": "TR",
+   "agency": "DEPARTMENT OF TREASURY",
+   "core_quit_rate": 14.6,
+   "drp_share_of_quits": 68.0,
+   "rk": 2
+  },
+  {
+   "agency_code": "HU",
+   "agency": "DEPARTMENT OF HOUSING AND URBAN DEVELOPM",
+   "core_quit_rate": 14.24,
+   "drp_share_of_quits": 79.0,
+   "rk": 3
+  },
+  {
+   "agency_code": "DN",
+   "agency": "DEPARTMENT OF ENERGY",
+   "core_quit_rate": 11.69,
+   "drp_share_of_quits": 67.0,
+   "rk": 4
+  },
+  {
+   "agency_code": "AG",
+   "agency": "DEPARTMENT OF AGRICULTURE",
+   "core_quit_rate": 11.08,
+   "drp_share_of_quits": 66.0,
+   "rk": 5
+  },
+  {
+   "agency_code": "VA",
+   "agency": "DEPARTMENT OF VETERANS AFFAIRS",
+   "core_quit_rate": 5.39,
+   "drp_share_of_quits": 18.0,
+   "rk": 14
+  },
+  {
+   "agency_code": "AR",
+   "agency": "DEPARTMENT OF THE ARMY",
+   "core_quit_rate": 5.19,
+   "drp_share_of_quits": 45.0,
+   "rk": 16
   }
  ],
  "core_share_fy2024": {

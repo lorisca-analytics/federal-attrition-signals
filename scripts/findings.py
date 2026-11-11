@@ -114,6 +114,12 @@ f["service_early_share_fy2012_2024"] = rows("""
                  / sum(core_quits), 1) as quit_share_under_3_years
     from service_year where fiscal_year between 2012 and 2024 and agency_code in ('ALL', 'VA', 'AR')
     group by 1 order by 1""")
+f["fy2025_core_top5_and_drp_share"] = rows("""
+    with r as (
+        select agency_code, agency, core_quit_rate, round(100.0 * drp_quits / nullif(quits, 0)) as drp_share_of_quits,
+               rank() over (order by core_quit_rate desc) as rk
+        from agency_year where fiscal_year = 2025 and not incomplete and avg_headcount >= 5000)
+    select * from r where rk <= 5 or agency_code in ('VA', 'AR') order by rk""")
 f["core_share_fy2024"] = rows("""
     select round(100.0 * sum(core_quits) / sum(quits), 1) as core_share_of_quits,
            round(100.0 * sum(core_avg_headcount) / sum(avg_headcount), 1) as core_share_of_headcount

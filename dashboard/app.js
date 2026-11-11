@@ -102,8 +102,8 @@
   fySel.value = lastFull;
   const whoSel = document.getElementById("whoSel");
   const WHO = {
-    core: { rate: r => r.core_quit_rate, note: "Permanent and conditional appointments on regular schedules only. Seasonal, intermittent and temporary staff are left out of both quits and headcount." },
-    all: { rate: r => r.quit_rate, note: "All staff and all quits, including seasonal and temporary jobs and any quit flagged as part of the Deferred Resignation Program." },
+    core: { rate: r => r.core_quit_rate, note: "Permanent and conditional appointments on regular schedules only. Everyone else (seasonal, intermittent and temporary staff, senior executives, blank codes) is left out of both quits and headcount." },
+    all: { rate: r => r.quit_rate, note: "All staff and all quits, including seasonal, intermittent and temporary jobs and any quit flagged as part of the Deferred Resignation Program." },
     nodrp: { rate: r => r.quit_rate_excl_drp, note: "All staff, with quits flagged as part of the Deferred Resignation Program left out." },
   };
 

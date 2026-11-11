@@ -6,7 +6,7 @@ Which federal agencies and job types lose people fastest, and how much of that i
 
 ## Summary
 
-I pulled every OPM separations file from Jul 2011 to Sep 2026 (183 monthly files, about 3.8 million rows) and a September headcount snapshot for each year, then built yearly quit rates per 100 employees by agency and by occupational group. A coverage check compares each agency's monthly report with its own previous year. In the Sep 2026 file the Army reports 9 separations against a usual month of about 1,860, a year after its September 2025 headcount of 212,550. Seventeen agency-months since Jul 2011 fail the check, and the years they belong to are listed instead of ranked. On the raw numbers, Commerce, Interior and Agriculture are in the top five for quit rate nearly every year. Among permanent staff on regular schedules, they never are, and Veterans Affairs and the Army are in the top five every year. Splitting by length of service shows two different patterns: Veterans Affairs carries more people in their first years, and the Army loses more people at every stage from the second year on.
+I pulled every OPM separations file from Jul 2011 to Sep 2026 (183 monthly files, about 3.8 million rows) and a September headcount snapshot for each year, then built yearly quit rates per 100 employees by agency and by occupational group. A coverage check compares each agency's monthly report with its own previous year. In the Sep 2026 file the Army reports 9 separations against a usual month of about 1,860, a year after its September 2025 headcount of 212,550. Seventeen agency-months since Jul 2011 fail the check, and the years they belong to are listed instead of ranked. On the raw numbers, Commerce, Interior and Agriculture are in the top five for quit rate nearly every year. Among permanent staff on regular schedules, they never are, and Veterans Affairs and the Army are in the top five every year from FY2012 to FY2024. Splitting by length of service shows two different patterns: Veterans Affairs carries more people in their first years, and the Army loses more people at every stage from the second year on.
 
 ## Problem
 
@@ -14,7 +14,7 @@ An agency's human capital office, OPM's workforce planning staff, or a consultan
 
 - A month with missing submissions looks like perfect retention. An agency that sends almost nothing ranks as the most stable employer in the government.
 - People who leave in one month show up in later files. About one in five rows in the Sep 2026 file is someone who left earlier.
-- Seasonal, intermittent and temporary jobs end on a schedule. In FY2024 they were about 8% of headcount in the agencies I could rank and about 28% of quits.
+- Seasonal, intermittent and temporary jobs end on a schedule. In FY2024, staff outside my permanent-staff definition (mostly these jobs, plus senior executives and records with a blank code) were about 8% of headcount in the agencies I could rank and about 28% of quits.
 - About 110,000 separations in FY2025 carry OPM's flag for the Deferred Resignation Program. Most are coded as resignations, so they read like an ordinary wave of quits.
 
 A ranking that ignores these points a planner at the wrong agencies.
@@ -35,7 +35,7 @@ OPM's data covers most executive branch civilian employees. By design it leaves 
 
 **Not every low month is a gap.** The Agency for International Development reports very few separations in FY2026 because very few people are left (4,800 employees in Sep 2024, 1,101 in Sep 2025, 230 in Sep 2026). The check skips agencies whose headcount fell by more than half in the year. Seasonal agencies have low months every winter, so a month only fails if it is also far below the same month a year earlier.
 
-**The raw leaders are seasonal employers.** Commerce, Interior and Agriculture top the raw quit ranking. In FY2024, 768 of Commerce's 2,384 quits came from permanent staff on regular schedules. Its quit rate falls from 4.89 to 1.85 per 100 when seasonal, intermittent and temporary jobs are left out of both the quits and the headcount.
+**The raw leaders are seasonal employers.** Commerce, Interior and Agriculture top the raw quit ranking. In FY2024, 768 of Commerce's 2,384 quits came from permanent staff on regular schedules. Its quit rate falls from 4.89 to 1.85 per 100 when everyone outside the permanent-staff definition is left out of both the quits and the headcount.
 
 **2025 is two stories.** The quit rate across the agencies I could rank went from 3.57 per 100 in FY2024 to 7.04 in FY2025. Leaving out quits OPM flags as part of the Deferred Resignation Program, FY2025 is 4.2.
 
@@ -49,7 +49,7 @@ OPM API ─┐                                            ┌─ data/clean/*.cs
 BLS API ─┘  (resumable)    (gitignored)    (DuckDB)   └─ fas/contract.py (CI)
 ```
 
-1. **Pull.** `fas/pull.py` keeps a manifest of every file with its version and checksum. A file is written as `.part` and renamed only when complete. A stopped run resumes where it stopped, a second run downloads nothing, and a new OPM version of a month is pulled while the old one is kept. When I widened the window by a year, the next run downloaded the 12 new files and skipped the 199 it already had.
+1. **Pull.** `fas/pull.py` downloads each OPM file once and records its version, so a stopped run picks up where it left off and OPM's corrections are pulled when they appear. When I widened the window by a year, the file manifest shows the next run fetched only the 12 new files.
 2. **Coverage check.** For each agency and file month, compare separations with the median of the previous 12 file months and with the same month a year earlier. Under a quarter of both, for an agency that normally reports 20 or more, is a gap. Any gap month marks the agency's fiscal year incomplete. `scripts/sensitivity.py` shows how the count moves with the thresholds.
 3. **Rates.** Quits and every other reason per 100 employees, using the average of the September headcount before and at the end of the fiscal year. Each rate also comes in a permanent-staff version (tenure groups 1 and 2, regular schedules), and exit-program quits are counted apart.
 4. **Contract.** `DATA_CONTRACT.md` and `contract/tables.v1.json` define every column of every output table. CI fails on a missing column, a wrong type, reasons that don't add up, or a rate without its trust flags.
@@ -58,7 +58,7 @@ Options I turned down, and what each choice cost, are in [DECISIONS.md](DECISION
 
 ## Results
 
-**Among permanent staff, the same agencies stay near the top.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 complete years from FY2012 to FY2024. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. The result is the same with a size floor of 10,000 or 20,000 employees instead of 5,000. The gap to the average is modest: in FY2024 Veterans Affairs' permanent-staff rate was 3.50 per 100 and the Army's 2.98, against 2.80 across all permanent staff in the agencies I could rank. Length of service shows where to look:
+**Among permanent staff, the same agencies stay near the top.** Among agencies with 5,000 or more employees, Veterans Affairs and the Army are in the top five for permanent-staff quit rate in all 13 years from FY2012 to FY2024, the years before the 2025 exit program. The Defense Department's own offices (OPM lists the Army, Navy and Air Force separately) are there in 12 and Homeland Security in 11. The result is the same with a size floor of 10,000 or 20,000 employees instead of 5,000. FY2025 breaks the pattern: the five agencies at the top that year (General Services, Treasury, Housing and Urban Development, Energy and Agriculture) had 66% to 86% of their quits flagged under the exit program, while Veterans Affairs fell to 14th and the Army to 16th. I count the streak through FY2024 for that reason and show FY2025 on the dashboard. The gap to the average is modest: in FY2024 Veterans Affairs' permanent-staff rate was 3.50 per 100 and the Army's 2.98, against 2.80 across all permanent staff in the agencies I could rank. Length of service shows where to look:
 
 | Years of service | All covered agencies | Veterans Affairs | Army |
 |---|---|---|---|

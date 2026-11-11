@@ -10,7 +10,7 @@
   "trace": {
     "problem": "Missing data and seasonal jobs skew the ranking",
     "move": "Coverage check, permanent staff ranked apart",
-    "result": "VA and the Army are top five in permanent-staff quits every year"
+    "result": "VA and the Army top five in permanent-staff quits, FY2012 to FY2024"
   },
   "cardVisual": {
     "kind": "bars",
@@ -26,15 +26,14 @@
     "problem": "Federal turnover numbers mislead in four ways. An agency with incomplete data looks like it kept everyone. People who left in one month show up in later files. Seasonal and temporary jobs end on a schedule and crowd the top of the quit ranking. And in 2025, exit-program departures were mostly coded as resignations, so they read like a wave of quits.",
     "approach": "I pulled 15 years of OPM separation files and September headcounts through OPM's open API, with a pull that can stop and resume and tracks every file version. A coverage check compares each agency's monthly report with its own previous year and holds failing years out of the ranking. Rates are counted by the month a person left, for all staff and for permanent staff on regular schedules, with exit-program departures split out.",
     "hers": "Solo project on public data. I designed the question, the checks and the data contract, and built the pull, the SQL tables and the dashboard.",
-    "result": "Seventeen agency-months since Jul 2011 fail the coverage check, including the Army and Air Force in Aug and Sep 2026. Commerce, Interior and Agriculture are in the top five for raw quit rates nearly every year, and none of them reaches the top five once seasonal and temporary jobs are left out. Among permanent staff, Veterans Affairs and the Army are in the top five in all 13 complete years from FY2012 to FY2024."
+    "result": "Seventeen agency-months since Jul 2011 fail the coverage check, including the Army and Air Force in Aug and Sep 2026. Commerce, Interior and Agriculture are in the top five for raw quit rates nearly every year, and none of them reaches the top five once seasonal and temporary jobs are left out. Among permanent staff, Veterans Affairs and the Army are in the top five in all 13 years from FY2012 to FY2024, before the 2025 exit program reshuffled the ranking."
   },
   "tools": [
     "Python",
     "SQL",
     "DuckDB",
-    "OPM API",
-    "BLS API",
-    "pytest"
+    "OPM workforce data",
+    "BLS JOLTS"
   ],
   "links": [
     {
